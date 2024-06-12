@@ -17,10 +17,26 @@
 - 支持接口限流
 - 高效率开发，使用代码生成器可以一键生成前后端代码。
 
+
+
+## 项目
+
+> 演示地址：[https://carole.top](https://carole.top)
+>
+> 默认有两个用户： admin的密码为carole test的密码为123456
+>
+> github: https://github.com/Carole007/carole-admin 
+>
+> gitee: https://gitee.com/Carole007/carole-admin
+
+
+
 ## 环境
 
 - nodejs: v20.12.0
 - mysql: 8.0.12
+
+
 
 ## 开始
 
@@ -39,11 +55,7 @@ npm i
 npm run start:dev
 ```
 
-## 在线体验
 
-演示地址：<https://carole.top>
-
->  默认有两个用户： admin的密码为carole    test的密码为123456
 
 ## 内置功能
 
@@ -280,7 +292,7 @@ export const Config: config = {
 
 ### @RequireRole
 
-`@RequireRoles`注解用于配置接口要求用户拥有指定角色才可访问
+`@RequireRole`注解用于配置接口要求用户拥有指定角色才可访问
 
 | 参数  | 类型   | 描述 |
 | ----- | ------ | ---- |
@@ -298,7 +310,7 @@ async test() {
 
 ### @RequirePermission
 
-`@RequiresRoles`注解用于配置接口要求用户拥有指定权限才可访问
+`@RequirePermission`注解用于配置接口要求用户拥有指定权限才可访问
 
 | 参数  | 类型   | 描述 |
 | ----- | ------ | ---- |
@@ -498,6 +510,6 @@ npm run build:prod
 
 微信: `luotianyi_y`
 
-qq交流群：
+qq交流群：[952834924](https://qm.qq.com/q/CspBa2r6h2)
 
 <img src="assets/qun.jpg" alt="qun" style="width:25%;" />
