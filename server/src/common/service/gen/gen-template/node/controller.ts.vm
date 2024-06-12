@@ -1,0 +1,98 @@
+import { Body, Controller, Delete, Get, Param, ParseArrayPipe, ParseIntPipe, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { ParseIntArrayPipe } from '@/common/pipe/parse-int-array.pipe';
+import Result from '@/common/result/Result';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { RequirePermission } from '@/common/decorator/require-premission.decorator';
+import { nowDateTime } from '@/common/utils';
+import { ${BusinessName}Service } from './service/${filename}.service';
+import { Query${className}Dto, Create${className}Dto, Update${className}Dto } from './dto/index';
+import { Response } from 'express';
+import { $modelName1 } from '@prismaClient';
+import { TableDataInfo } from '@/common/domain/TableDataInfo';
+@ApiTags("${functionName}")
+@ApiBearerAuth()
+@Controller('${moduleName}/${businessName}')
+export class ${className}Controller {
+    constructor(private ${businessName}Service: ${BusinessName}Service) { } 
+
+    @ApiOperation({ summary: "查询${functionName}列表" })
+    @ApiQuery({type:Query${className}Dto})
+    @ApiResponse({ type: TableDataInfo<${modelName1}> })
+    @RequirePermission("${moduleName}:${businessName}:list")
+    @Get("/list")
+    async list${BusinessName}(@Query() q: Query${className}Dto): Promise<TableDataInfo<${modelName1}>> {
+       return Result.TableData(await this.${businessName}Service.select${BusinessName}List(q))
+    }
+
+    @ApiOperation({ summary: "查询${functionName}所有" })
+    @ApiResponse({ type: Result<${modelName1}[]> })
+    @RequirePermission("${moduleName}:${businessName}:list")
+    @Get("/data")
+    async list${BusinessName}Data(): Promise<Result<${modelName1}[]>> {
+       return Result.ok(await this.${businessName}Service.select${BusinessName}All())
+    }
+
+    
+    @ApiOperation({ summary: "导出${functionName}xlsx文件" })
+    @RequirePermission("${moduleName}:${businessName}:export")
+    @Get("/export")
+    async export(@Res() res: Response): Promise<void> {
+       return this.${businessName}Service.export${BusinessName}(res)
+    }
+
+
+    @ApiOperation({ summary: "查询${functionName}详细" })
+    @ApiResponse({ type: Result<${modelName1}> })
+    @RequirePermission("${moduleName}:${businessName}:list")
+    @Get("/:${pkName}")
+    async get${BusinessName}(@Param("${pkName}"#if(${pkColumn.javaType.toLowerCase()}=="number"), ParseIntPipe#end) ${pkName}: ${pkColumn.javaType.toLowerCase()}): Promise<Result<${modelName1}>> {
+        return Result.ok(await this.${businessName}Service.select${BusinessName}By${UpperPkName}(${pkName}))
+        
+    }
+
+    @ApiOperation({ summary: "新增${functionName}" })
+    @ApiResponse({ type: Result<${modelName1}> })
+    @ApiBody({ type: Create${className}Dto })
+    @RequirePermission("${moduleName}:${businessName}:add")
+    @Post("/")
+    async add${BusinessName}(@Body() ${entityName}: Create${className}Dto, @Req() req): Promise<Result<${modelName1}>> {
+        #if(${hasBaseDomain})
+${entityName} = {
+            ...${entityName},
+            createTime: nowDateTime(),
+            updateTime: nowDateTime(),
+            createBy: req.user?.userName,
+            updateBy: req.user?.userName
+        }
+        #end
+return Result.ok(await this.${businessName}Service.add${BusinessName}(${entityName}))
+    }
+   
+   @ApiOperation({ summary: "修改${functionName}" })
+   @ApiResponse({ type: Result<any> })
+   @ApiBody({ type: Update${className}Dto })
+   @RequirePermission("${moduleName}:${businessName}:edit")
+   @Put("/")
+    async update${BusinessName}(@Body() ${entityName}: Update${className}Dto, @Req() req): Promise<Result<any>> {
+        #if($hasBaseDomain)
+${entityName} = {
+            ...${entityName},
+            updateTime: nowDateTime(),
+            updateBy: req.user?.userName
+        }
+        #end
+await this.${businessName}Service. update${BusinessName}(${entityName})
+        return Result.ok("修改成功！")
+    }
+
+
+   
+    @ApiOperation({ summary: "删除${functionName}" })
+    @ApiResponse({ type: Result<any> })
+    @RequirePermission("${moduleName}:${businessName}:remove")
+    @Delete("/:ids")
+    async del${BusinessName}(@Param("ids", #if(${pkColumn.javaType.toLowerCase()}=="number")ParseIntArrayPipe#else ParseArrayPipe#end) ${pkName}s: ${pkColumn.javaType.toLowerCase()}[]): Promise<Result<any>> {
+        let { count } = await this.${businessName}Service.delete${BusinessName}By${UpperPkName}s(${pkName}s)
+        return Result.toAjax(count)
+    }
+}

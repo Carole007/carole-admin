@@ -1,0 +1,15 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "./common/prisma-client"
+  previewFeatures = ["views", "relationJoins", "prismaSchemaFolder", "omitApi"]
+  //可以选择自己的平台，这里我就全部一起指定了
+  binaryTargets   = ["darwin", "windows", "linux-musl","debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+

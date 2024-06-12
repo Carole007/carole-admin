@@ -1,0 +1,55 @@
+model GenTable {
+  tableId        Int              @id @default(autoincrement()) @map("table_id") @db.UnsignedInt
+  tableName      String?          @default("") @map("table_name") @db.VarChar(200)
+  tableComment   String?          @default("") @map("table_comment") @db.VarChar(500)
+  subTableName   String?          @map("sub_table_name") @db.VarChar(64)
+  subTableFkName String?          @map("sub_table_fk_name") @db.VarChar(64)
+  className      String?          @default("") @map("class_name") @db.VarChar(100)
+  tplCategory    String?          @default("crud") @map("tpl_category") @db.VarChar(200)
+  tplWebType     String?          @default("") @map("tpl_web_type") @db.VarChar(30)
+  packageName    String?          @map("package_name") @db.VarChar(100)
+  moduleName     String?          @map("module_name") @db.VarChar(30)
+  businessName   String?          @map("business_name") @db.VarChar(30)
+  functionName   String?          @map("function_name") @db.VarChar(50)
+  functionAuthor String?          @map("function_author") @db.VarChar(50)
+  genType        String?          @default("0") @map("gen_type") @db.Char(1)
+  genPath        String?          @default("/") @map("gen_path") @db.VarChar(200)
+  options        String?          @map("options") @db.VarChar(1000)
+  createBy       String?          @default("") @map("create_by") @db.VarChar(64)
+  createTime     String?          @map("create_time") @db.VarChar(25)
+  updateBy       String?          @default("") @map("update_by") @db.VarChar(64)
+  updateTime     String?          @map("update_time") @db.VarChar(25)
+  remark         String?          @db.VarChar(500)
+  tableColumns   GenTableColumn[]
+
+  @@map("gen_table")
+}
+
+model GenTableColumn {
+  columnId      Int       @id @default(autoincrement()) @map("column_id") @db.UnsignedInt
+  tableId       Int?      @map("table_id") @db.UnsignedInt
+  columnName    String?   @map("column_name") @db.VarChar(200)
+  columnComment String?   @map("column_comment") @db.VarChar(500)
+  columnType    String?   @map("column_type") @db.VarChar(100)
+  javaType      String?   @map("java_type") @db.VarChar(500)
+  javaField     String?   @map("java_field") @db.VarChar(200)
+  isPk          String?   @map("is_pk") @db.Char(1)
+  isIncrement   String?   @map("is_increment") @db.Char(1)
+  isRequired    String?   @map("is_required") @db.Char(1)
+  isInsert      String?   @map("is_insert") @db.Char(1)
+  isEdit        String?   @map("is_edit") @db.Char(1)
+  isList        String?   @map("is_list") @db.Char(1)
+  isQuery       String?   @map("is_query") @db.Char(1)
+  queryType     String?   @default("EQ") @map("query_type") @db.VarChar(200)
+  htmlType      String?   @map("html_type") @db.VarChar(200)
+  dictType      String?   @default("") @map("dict_type") @db.VarChar(200)
+  sort          Int?      @map("sort")
+  createBy      String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime    String?   @map("create_time") @db.VarChar(25)
+  updateBy      String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime    String?   @map("update_time") @db.VarChar(25)
+  table         GenTable? @relation(fields: [tableId], references: [tableId])
+
+  @@index([tableId])
+  @@map("gen_table_column")
+}

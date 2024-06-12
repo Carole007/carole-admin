@@ -1,0 +1,75 @@
+import { BaseDomain } from "@/common/domain/BaseDomain"
+import { ApiProperty } from "@nestjs/swagger"
+import { Transform } from "class-transformer"
+import { IsNotEmpty, IsNumber, IsString, IsOptional } from "class-validator"
+import { queryDomain } from "@/common/domain/queryDomain";
+
+/**@description 查询${functionName}Dto */
+export class Query${className}Dto extends queryDomain {
+  #foreach($column in $columns)
+    #set($type=$column.javaType.toLowerCase())
+    #if($column.query && $column.queryType != "BETWEEN")
+      @ApiProperty({description:"$column.columnComment"})
+      @IsOptional()
+      #if($column.javaType=="Number")
+      @Transform((v) => +v.value)
+      @IsNumber()#end
+      ${column.javaField}: ${type} | null
+    #end
+  #end
+}
+
+/**@description 创建${functionName}Dto */
+export class Create${className}Dto #if(${hasBaseDomain}) extends BaseDomain #end{
+  #foreach($column in $columns)
+    #set($type=$column.javaType.toLowerCase())
+    #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
+      @ApiProperty({description:"$column.columnComment"})
+      #if($column.required)
+      @IsNotEmpty({ message: "$column.columnComment不能为空" })
+      #else
+      @IsOptional()
+      #end
+      #if($column.javaType=="Number")
+      @Transform((v) => +v.value)
+      @IsNumber()
+      #else
+      @IsString()    
+      #end
+      ${column.javaField}#if(!$column.required)?#end: ${type}
+    #end
+  #end
+}
+
+/**@description 更新${functionName}Dto */
+export class Update${className}Dto #if(${hasBaseDomain}) extends BaseDomain #end{
+  #foreach($column in $columns)
+    #set($type=$column.javaType.toLowerCase())
+    #if($column.columnName == $pkColumn.columnName)
+      @ApiProperty({description:"$column.columnComment"})
+      @IsNotEmpty({ message: "$column.columnComment不能为空" })
+    #if($column.javaType=="Number")
+      @Transform((v) => +v.value)
+      @IsNumber()
+    #else
+      @IsString()
+    #end
+      ${column.javaField}#if(!$column.required && $column.columnName != $pkColumn.columnName)?#end: ${type}
+    #end
+    #if($column.columnName != $pkColumn.columnName && $column.edit)
+      @ApiProperty({description:"$column.columnComment"})
+      #if($column.required)
+      @IsNotEmpty({ message: "$column.columnComment不能为空" })
+      #else
+      @IsOptional()
+      #end
+      #if($column.javaType=="Number")
+      @Transform((v) => +v.value)
+      @IsNumber()
+      #else
+      @IsString()    
+      #end
+      ${column.javaField}#if(!$column.required)?#end: ${type}
+    #end
+  #end
+}
