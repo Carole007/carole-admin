@@ -23,7 +23,7 @@ export class SysUserController {
 
 
     @ApiOperation({ summary: "获取岗位和角色选择" })
-    @RequireRole("admin")
+    @RequirePermission("system:user:add")
     @Get("/")
     async getRolePost() {
         let roles = await this.prisma.sysRole.findMany({ where: { roleId: { not: 1 } } })
@@ -171,6 +171,8 @@ export class SysUserController {
             createBy: req.user?.userName,
             updateBy: req.user?.userName
         }
+        //过滤掉设置超级管理员角色
+        sysUser.roleIds = sysUser.roleIds.filter(v => v !== 1)
         return Result.ok(await this.userService.addUser(sysUser))
     }
     @ApiOperation({ summary: "修改用户管理" })
@@ -179,7 +181,10 @@ export class SysUserController {
     @RequirePermission("system:user:edit")
     @Put("/")
     async updateUser(@Body() sysUser: UpdateSysUserDto, @Req() req): Promise<Result<any>> {
+        //不能修改超级管理员
         if (sysUser.userId === 1) throw new BadRequestException("非法操作！")
+        //过滤掉设置超级管理员角色
+        sysUser.roleIds = sysUser.roleIds.filter(v => v !== 1)
         //当前用户不能修改自己的状态
         if (sysUser.userId === req.userId) {
             delete sysUser.status
