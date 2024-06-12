@@ -131,9 +131,9 @@ export class ThrottlerExceptionFilter<T> implements ExceptionFilter {
 /**
  * @desc 全局错误处理
  */
-@Catch(Error)
+@Catch()
 export class GlobalErrorFilter<T> implements ExceptionFilter {
-  catch(exception: Error, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost) {
     let res = host.switchToHttp().getResponse<Response>()
     console.log(exception)
     res.send(Result.Error("error"))
