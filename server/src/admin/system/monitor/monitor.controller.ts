@@ -52,7 +52,7 @@ export class monitorController {
       })
     }
     let userList = (await redisUtils.mget(tokens)).map(v => JSON.parse(v))
-    userList = userList.filter(v => v.ipaddr.includes(ipaddr) && v.userName.includes(userName))
+    userList = userList.filter(v => v.loginLocation.includes(ipaddr) && v.userName.includes(userName))
     userList.sort((a, b) => (+new Date(b.loginTime)) - (+new Date(a.loginTime)))
     return Result.TableData({
       rows: userList,
