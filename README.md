@@ -33,6 +33,7 @@ cd carole-admin/server
 
 # 安装依赖
 npm i  
+# 导入sql
 # 在server/src目录下 新建.env文件，参照.env.example文件填写环境变量配置，数据库连接信息必填：DATABASE_URL
 # 启动服务
 npm run start:dev
