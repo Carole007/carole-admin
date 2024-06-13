@@ -17,7 +17,6 @@ import { RemoveThrottleHeadersInterceptor } from './common/interceptors/remove-t
 import "@/common/utils/emial"
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './schedule';
-import Result from '@/common/result/Result';
 @Module({
   imports: [
     AdminModule,
