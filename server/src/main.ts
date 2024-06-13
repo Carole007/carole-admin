@@ -1,7 +1,5 @@
 
 import 'module-alias/register'
-import { join } from "path"
-import {config} from "dotenv"
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -9,7 +7,6 @@ import { Config } from '@/config';
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { lightBlue } from "kolorist";
 import { Constants } from './common/constant/Constants';
-config({path:join(__dirname,".env")})
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.set('trust proxy', true)

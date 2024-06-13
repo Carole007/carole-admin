@@ -1,6 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class RemoveThrottleHeadersInterceptor implements NestInterceptor {
