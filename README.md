@@ -35,7 +35,7 @@
 
 - nodejs: v20.12.0
 - mysql: 8.0.12
-
+- redis
 
 
 ## 开始
@@ -49,8 +49,13 @@ cd carole-admin/server
 
 # 安装依赖
 npm i  
+
 # 导入sql
-# 在server/src目录下 新建.env文件，参照.env.example文件填写环境变量配置，数据库连接信息必填：DATABASE_URL
+
+# 启动redis
+
+# 修改server/src/里面的.env数据库连接配置，以及config.ts里面的redis连接配置，文件上传路径。
+
 # 启动服务
 npm run start:dev
 ```
@@ -126,7 +131,7 @@ npm run start:dev
            │  ├─prisma-client 	   #prisma客户端
            │  ├─result    		   #返回对象
            │  ├─service
-           │  │  ├─auth   		   #身份相关处理逻辑
+           │  │  ├─auth            #身份相关处理逻辑
            │  │  ├─gen    		   #代码生成逻辑
            │  │  │  └─gen-template #代码模板
            │  └─utils    		   #通用工具
@@ -137,10 +142,10 @@ npm run start:dev
            
            ├─schedule    		   #定时任务
            
-           ├─ │  ├─.env   		   #环境变量配置， 密码
-           ├─ │  ├─main.ts   	   #主文件
-           ├─ │  ├─config.ts 	   #系统配置文件
-           ├─ │  ├─app.module.ts   #系统主模块
+           ├─.env   		       #环境变量配置， 密码
+           ├─main.ts   	           #主文件
+           ├─config.ts 	           #系统配置文件
+           ├─app.module.ts         #系统主模块
 
 ```
 
