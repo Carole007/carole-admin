@@ -26,6 +26,16 @@ export class SysDictDataService implements OnModuleInit {
     console.log("字典信息初始化完毕！")
   }
 
+  //根据字典类型更新redis字典数据
+  async updateCache(dictType:string) { 
+    let dictDatas = await this.prisma.sysDictData.findMany({
+      where: {
+        dictType
+      }
+    })
+    return await redisUtils.set(Constants.SYS_DICT_KEY + dictType, JSON.stringify(dictDatas, null, 2))
+  }
+
   //查询字典数据列表
   async selectDictDataList(q: queryDictDataDto) {
     let queryCondition: Prisma.SysDictDataWhereInput = {}
@@ -79,30 +89,44 @@ export class SysDictDataService implements OnModuleInit {
 
   //新增字典数据
   async addDictData(dictData: CreateDictDataDto) {
-    return await this.prisma.sysDictData.create({
+    let res = await this.prisma.sysDictData.create({
       data: dictData
     })
+    await this.updateCache(dictData.dictType)
+    return res
   }
 
   //修改字典数据
   async updateDictData(dictData: updateDictDataDto) {
-    return await this.prisma.sysDictData.update({
+    let res = await this.prisma.sysDictData.update({
       where: {
         dictCode: dictData.dictCode
       },
       data: dictData
     })
+    await this.updateCache(dictData.dictType)
+    return res
 
   }
   //删除字典数据
   async deleteDictData(dictCodes: number[]) {
-    return await this.prisma.sysDictData.deleteMany({
+    let dictType = (await this.prisma.sysDictData.findFirst({
+      select: {
+        dictType:true
+      },
+      where: {
+        dictCode:dictCodes[0]
+      }
+    })).dictType
+    let res = await this.prisma.sysDictData.deleteMany({
       where: {
         dictCode: {
           in: dictCodes
         }
       }
     })
+    await this.updateCache(dictType)
+    return res
   }
 
   //导出xlsx文件 

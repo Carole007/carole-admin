@@ -9,6 +9,8 @@ import { SysDictDataService } from '../../dict-data/service/sys-dict-data.servic
 import { ValidationException } from '@/common/exception/ValidationException';
 import { Response } from 'express';
 import { exportTable } from '@/common/utils';
+import { redisUtils } from '@/common/utils/redisUtils';
+import { Constants } from '@/common/constant/Constants';
 
 @Injectable()
 export class SysDictTypeService {
@@ -52,7 +54,7 @@ export class SysDictTypeService {
 
   //查询所有数据
   async selectAllDictType() {
-    return  this.prisma.sysDictType.findMany()
+    return this.prisma.sysDictType.findMany()
   }
 
   //查询字典类型详细
@@ -66,9 +68,11 @@ export class SysDictTypeService {
 
   //新增字典类型
   async addDictType(dictType: CreateDictTypeDto) {
-    return await this.prisma.sysDictType.create({
+    let res = await this.prisma.sysDictType.create({
       data: dictType
     })
+    await redisUtils.set(Constants.SYS_DICT_KEY + dictType.dictType, JSON.stringify([], null, 2))
+    return res
   }
   //修改字典类型
   async updateDictType(dictType: updateDictTypeDto) {
@@ -93,25 +97,21 @@ export class SysDictTypeService {
           }
         })
       }
-      return await db.sysDictType.update({
+      let res = await db.sysDictType.update({
         where: {
           dictId: dictType.dictId
         },
-        data: {
-          dictName: dictType.dictName,
-          dictType: dictType.dictType,
-          status: dictType.status,
-          remark: dictType.remark,
-          updateTime: dictType.updateTime,
-          updateBy: dictType.updateBy,
-        }
+        data: dictType
       })
+      await this.dictDataService.updateCache(dictType.dictType)
+      return res
     })
 
   }
 
   //删除字典类型
   async deleteDictType(dictIds: number[]) {
+    let dictTypes = new Set<string>()
     for (let id of dictIds) {
       let r = await this.prisma.sysDictType.findUnique({
         where: {
@@ -125,15 +125,21 @@ export class SysDictTypeService {
       if (r?.dictDatas?.length) {
         throw new ValidationException('当前字典类型下有子数据，不能删除')
       }
+      dictTypes.add(Constants.SYS_DICT_KEY + r.dictType)
     }
-    return await this.prisma.sysDictType.deleteMany({
+    let res = await this.prisma.sysDictType.deleteMany({
       where: {
         dictId: {
           in: dictIds
         }
       }
     })
+    for (let k of dictTypes) {
+      await redisUtils.del(k)
+    }
+    return res
   }
+
 
   //刷新字典缓存
   async refreshDictCache() {
