@@ -1,7 +1,6 @@
 import { BaseDomain } from "@/common/domain/BaseDomain"
-import { Optional } from "@nestjs/common"
 import { ApiProperty } from "@nestjs/swagger"
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsOptional, IsString } from "class-validator"
 
 export class CreateDictTypeDto extends BaseDomain {
   @ApiProperty({description:"字典名称"})
@@ -13,6 +12,6 @@ export class CreateDictTypeDto extends BaseDomain {
   @IsString()
   dictType: string
   @ApiProperty({description:"字典状态（0停用，1正常）"})
-  @Optional()
+  @IsOptional()
   status?: string = "1"
 }

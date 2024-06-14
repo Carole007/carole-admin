@@ -1,8 +1,7 @@
 import { BaseDomain } from "@/common/domain/BaseDomain"
-import { Optional } from "@nestjs/common"
 import { ApiProperty } from "@nestjs/swagger"
 import { Transform } from "class-transformer"
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class CreateDictDataDto extends BaseDomain {
   @ApiProperty({ description: "字典类型" })
@@ -18,10 +17,10 @@ export class CreateDictDataDto extends BaseDomain {
   @IsString()
   dictValue?: string
   @ApiProperty({ description: "样式属性" })
-  @Optional()
+  @IsOptional()
   cssClass?: string
   @ApiProperty({ description: "回显样式" })
-  @Optional()
+  @IsOptional()
   listClass?: string
   @ApiProperty({ description: "显示排序" })
   @IsNotEmpty({ message: "排序值不能为空" })
@@ -29,6 +28,6 @@ export class CreateDictDataDto extends BaseDomain {
   @IsNumber()
   dictSort: number
   @ApiProperty({ description: "字典状态（0停用，1正常）" })
-  @Optional()
+  @IsOptional()
   status?: string = "1"
 }
