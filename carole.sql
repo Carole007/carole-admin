@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 12/06/2024 12:22:31
+ Date: 14/06/2024 22:01:33
 */
 
 SET NAMES utf8mb4;
@@ -238,7 +238,7 @@ CREATE TABLE `sys_dict_data`  (
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`) USING BTREE,
   INDEX `sys_dict_data_dict_type_idx`(`dict_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 113 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 116 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -274,12 +274,8 @@ INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '1', 'sys_common_status', '
 INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '0', 'sys_common_status', '', 'danger', 'N', '1', 'admin', '2023-12-18 14:59:07', '', NULL, '停用状态');
 INSERT INTO `sys_dict_data` VALUES (102, 1, '启用', '1', 'dict_test_status', NULL, 'primary', 'N', '1', '', '2023-12-28 08:51:15', '', '2023-12-28 08:51:15', NULL);
 INSERT INTO `sys_dict_data` VALUES (103, 2, '未启用', '2', 'dict_test_status', NULL, 'danger', 'N', '1', '', '2023-12-28 08:51:34', '', '2023-12-28 08:51:34', NULL);
-INSERT INTO `sys_dict_data` VALUES (105, 1, '未启用', '0', 'mi_status', NULL, 'danger', 'N', '1', '', '2024-01-10 10:58:16', '', '2024-01-10 10:58:24', '未启用');
-INSERT INTO `sys_dict_data` VALUES (106, 2, '启用', '1', 'mi_status', NULL, 'primary', 'N', '1', '', '2024-01-10 10:58:47', '', '2024-01-10 11:07:11', '启用');
 INSERT INTO `sys_dict_data` VALUES (107, 0, '是', '1', 'isAdmin', NULL, 'primary', 'N', '1', '', '2024-01-16 00:00:00', '', '2024-01-16 00:00:00', NULL);
 INSERT INTO `sys_dict_data` VALUES (108, 0, '否', '0', 'isAdmin', NULL, 'danger', 'N', '1', '', '2024-01-16 00:00:00', '', '2024-01-16 00:00:00', NULL);
-INSERT INTO `sys_dict_data` VALUES (109, 0, '否', '0', 'isTrue', NULL, 'danger', 'N', '1', '', '2024-01-16 00:00:00', '', '2024-01-16 00:00:00', NULL);
-INSERT INTO `sys_dict_data` VALUES (110, 0, '是', '1', 'isTrue', NULL, 'primary', 'N', '1', '', '2024-01-16 00:00:00', '', '2024-01-16 00:00:00', NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -312,9 +308,6 @@ INSERT INTO `sys_dict_type` VALUES (7, '通知类型', 'sys_notice_type', '1', '
 INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '1', 'admin', '2023-12-18 14:59:07', 'admin', '2024-01-16 00:00:00', '通知状态列表');
 INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '1', 'admin', '2023-12-18 14:59:07', 'admin', '2024-01-16 00:00:00', '操作类型列表');
 INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '1', 'admin', '2023-12-18 14:59:07', 'admin', '2024-01-16 00:00:00', '登录状态列表');
-INSERT INTO `sys_dict_type` VALUES (111, '数据状态', 'mi_status', '1', 'admin', '2024-01-10 10:57:38', 'admin', '2024-01-16 00:00:00', '数据状态 0未启用，1启用');
-INSERT INTO `sys_dict_type` VALUES (112, '是否管理员', 'isTrue', '1', 'admin', '2024-01-16 00:00:00', 'admin', '2024-01-16 00:00:00', '是否（0否，1是）');
-INSERT INTO `sys_dict_type` VALUES (115, 'fasdfaf', 'aaaaaa', '1', 'admin', '2024-04-30 17:27:38', 'admin', '2024-05-06 10:46:37', 'asdfds');
 
 -- ----------------------------
 -- Table structure for sys_logininfor
@@ -333,7 +326,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 351 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 352 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -429,6 +422,7 @@ INSERT INTO `sys_logininfor` VALUES (347, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (348, 'admin', '127.0.0.1', '内网IP', 'Chrome 125', 'Windows 10', '1', '登录成功', '2024-06-12 12:15:46');
 INSERT INTO `sys_logininfor` VALUES (349, 'admin', '127.0.0.1', '内网IP', 'Chrome 125', 'Windows 10', '1', '登录成功', '2024-06-12 12:19:56');
 INSERT INTO `sys_logininfor` VALUES (350, 'admin', '127.0.0.1', '内网IP', 'Chrome 125', 'Windows 10', '1', '登录成功', '2024-06-12 12:21:38');
+INSERT INTO `sys_logininfor` VALUES (351, 'admin', '127.0.0.1', '内网IP', 'Chrome 126', 'Windows 10', '1', '登录成功', '2024-06-14 21:27:00');
 
 -- ----------------------------
 -- Table structure for sys_menu
