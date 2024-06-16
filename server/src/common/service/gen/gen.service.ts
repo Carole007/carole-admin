@@ -510,12 +510,13 @@ export class GenService {
     column.createTime = column.createTime || nowDateTime()
     column.updateBy = "admin"
     column.updateTime = nowDateTime()
-    if (arraysContains(GenConstants.COLUMNTYPE_STR, dataType)
-      || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType)) {
+    if (arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType)) {
+      column.htmlType = GenConstants.HTML_TEXTAREA 
+    } else if (arraysContains(GenConstants.COLUMNTYPE_STR, dataType)) { 
       let len = getColumnLength(dataType)
-      column.htmlType = len >= 500 || arraysContains(GenConstants.COLUMNTYPE_TEXT)
-        ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT
-    } else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
+      column.htmlType = len >= 500  ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT
+    }
+    else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
       column.javaType = GenConstants.TYPE_DATE;
       column.htmlType = GenConstants.HTML_DATETIME;
     } else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
@@ -535,7 +536,7 @@ export class GenService {
       column.isList = GenConstants.REQUIRE;
     }
     // 查询字段
-    if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && column.isPk != 1) {
+    if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && column.isPk != 1 && column.htmlType != GenConstants.HTML_TEXTAREA ) {
       column.isQuery = GenConstants.REQUIRE;
     }
     let lowerColumnName = toLower(columnName)
