@@ -470,7 +470,7 @@ model SysConfig {
   async test2() {
     return Result.ok()
   }
-//当前用户只能1天只能请求一次
+//用户1天只能请求一次
 @ThrottleUser()
 @Throttle({
     default: {
