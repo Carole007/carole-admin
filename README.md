@@ -445,7 +445,7 @@ model SysConfig {
 > 默认所有接口2分钟内都只允许60次请求，可以在config.ts里面配置rateLimit，
 > 单独定义某个接口，只需加上@Throttle根据自己需要配置即可
 >
-> 默认使用用户ip进行限流，可添加@ThrottleUser()注解对用户进行限流
+> 默认使用请求ip进行限流，可添加@ThrottleUser()注解对用户进行限流（比如限制用户一天只能修改一次密码）
 
 示例:
 
