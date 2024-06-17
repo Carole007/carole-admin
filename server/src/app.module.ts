@@ -12,7 +12,7 @@ import {
 } from '@/common/filter/global-error.filter';
 import { ValidationException } from './common/exception/ValidationException';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ThrottlerBehindProxyGuard } from './common/guard/throttler/throttler-behind-proxy.guard';
+import { ThrottlerCustomGuard } from './common/guard/throttler/throttler-custom.guard';
 import { RemoveThrottleHeadersInterceptor } from './common/interceptors/remove-throttle-headers.interceptor';
 import "@/common/utils/emial"
 import { ScheduleModule } from '@nestjs/schedule';
@@ -44,7 +44,7 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
     RoleGuard,
     {
       provide: APP_GUARD,
-      useClass: ThrottlerBehindProxyGuard
+      useClass: ThrottlerCustomGuard
     },
     {
       provide: APP_GUARD,

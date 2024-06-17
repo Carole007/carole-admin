@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { THROTTLE_USER_KEY } from '@/common/decorator/throttle-user';
 
 @Injectable()
-export class ThrottlerBehindProxyGuard extends ThrottlerGuard {
+export class ThrottlerCustomGuard extends ThrottlerGuard {
   @Inject()
   protected reflector: Reflector;
   protected generateKey(context: ExecutionContext): string {
