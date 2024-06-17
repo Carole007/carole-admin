@@ -177,6 +177,8 @@ export const Config: config = {
   },
   //接口限流 2分钟内同一个接口允许60次请求
   rateLimit: {
+    //数据存储在redis or memory
+    storage:"redis",
     ttl: 2 * 60 * 1000,
     limit: 60,
   },
@@ -442,6 +444,8 @@ model SysConfig {
 
 > 默认所有接口2分钟内都只允许60次请求，可以在config.ts里面配置rateLimit，
 > 单独定义某个接口，只需加上@Throttle根据自己需要配置即可
+>
+> 默认使用用户ip进行限流，可添加@ThrottleUser()注解对用户进行限流
 
 示例:
 
@@ -464,6 +468,17 @@ model SysConfig {
     }
   })
   async test2() {
+    return Result.ok()
+  }
+//当前用户只能1天只能请求一次
+@ThrottleUser()
+@Throttle({
+    default: {
+      limit: 1,
+      ttl: 1000 * 60 * 60 * 24
+    }
+  })
+async test3() {
     return Result.ok()
   }
 ```
