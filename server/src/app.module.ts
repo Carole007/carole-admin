@@ -17,17 +17,24 @@ import { RemoveThrottleHeadersInterceptor } from './common/interceptors/remove-t
 import "@/common/utils/emial"
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './schedule';
+import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 @Module({
   imports: [
     AdminModule,
     CommonModule,
-    ThrottlerModule.forRoot([
-      {
-        name: "default",
-        ttl: Config.rateLimit.ttl,
-        limit: Config.rateLimit.limit
-      },
-    ]),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: "default",
+          ttl: Config.rateLimit.ttl,
+          limit: Config.rateLimit.limit,
+        },
+      ],
+      storage: Config.rateLimit.storage === "redis" ? new ThrottlerStorageRedisService({
+        ...Config.redis,
+        disconnectTimeout: 60 * 5 * 1000
+      }) : null
+    }),
     ScheduleModule.forRoot()],
   controllers: [],
   providers: [

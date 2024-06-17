@@ -21,6 +21,8 @@ export const Config: config = {
   },
   //接口限流 2分钟内同一个接口允许60次请求
   rateLimit: {
+    //数据存储在redis or memory
+    storage:"redis",
     ttl: 2 * 60 * 1000,
     limit: 60,
   },

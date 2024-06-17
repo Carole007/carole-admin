@@ -11,6 +11,7 @@ interface config {
     expiresIn: number
   }
   rateLimit: {
+    storage:"memory"|"redis",
     ttl: number
     limit: number
   }
