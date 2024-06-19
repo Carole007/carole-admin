@@ -123,11 +123,13 @@ export class GenService {
     delete info.UpperPkName
     delete info.params
 
-
+    let id = info.tableId
+    delete info.tableId
+    delete info.dictsNoSymbol
     return this.prisma.$transaction(async (prisma) => {
       await prisma.genTable.update({
         where: {
-          tableId: info.tableId
+          tableId: id
         },
         data: info
       })
