@@ -298,7 +298,6 @@ export class GenService {
     let data = {
       ...info,
       dicts: info.dicts.join(","),
-      dictsNoSymbol: info.dicts.join(",").replaceAll("'", ""),
       modelName: camelCase(info.tableName),
       modelName1: toPascalCase(info.tableName),
       filename: kebabCase(info.tableName),
@@ -441,6 +440,7 @@ export class GenService {
       let data = {
         ...tableInfo,
         dicts,
+        dictsNoSymbol: dicts.join(",").replace(/"|'/g, ""),
         columns: tableColumns,
         tableColumns,
         columnsKey: JSON.stringify(tableInfo?.tableColumns?.map(v => v.columnName)),
@@ -484,6 +484,7 @@ export class GenService {
       let data = {
         ...tableInfo,
         dicts,
+        dictsNoSymbol: dicts.join(",").replace(/"|'/g, ""),
         columns: tableColumns,
         tableColumns,
         columnsKey: JSON.stringify(tableInfo?.tableColumns?.map(v => v.columnName)),
