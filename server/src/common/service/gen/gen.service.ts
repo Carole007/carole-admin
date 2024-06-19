@@ -297,7 +297,6 @@ export class GenService {
     })
     let data = {
       ...info,
-      dicts: info.dicts.join(","),
       modelName: camelCase(info.tableName),
       modelName1: toPascalCase(info.tableName),
       filename: kebabCase(info.tableName),
@@ -439,7 +438,7 @@ export class GenService {
       let pkColumn = tableColumns?.find((v: any) => Boolean(+v.isPk) && Boolean(+v.isIncrement)) || tableColumns[0]
       let data = {
         ...tableInfo,
-        dicts,
+        dicts:dicts.join(","),
         dictsNoSymbol: dicts.join(",").replace(/"|'/g, ""),
         columns: tableColumns,
         tableColumns,
@@ -483,7 +482,7 @@ export class GenService {
       let pkColumn = tableColumns?.find((v: any) => Boolean(+v.isPk) && Boolean(+v.isIncrement)) || tableColumns[0]
       let data = {
         ...tableInfo,
-        dicts,
+        dicts:dicts.join(","),
         dictsNoSymbol: dicts.join(",").replace(/"|'/g, ""),
         columns: tableColumns,
         tableColumns,
