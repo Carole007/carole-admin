@@ -133,9 +133,15 @@ export class MenuService {
     assert(!menu1, "菜单已被分配,不允许删除!")
     return this.prisma.sysMenu.deleteMany({
       where: {
-        menuId: {
-          in: menuIds
-        }
+        OR: [
+          {
+            menuId: { in: menuIds }
+          },
+          {
+            menuType: "F",
+            parentId: { in: menuIds }
+          }
+        ]
       }
     })
   }
@@ -155,9 +161,17 @@ export class MenuService {
       where: { menuId }
     })
     assert(!menu1, "菜单已被分配,不允许删除!")
-    return this.prisma.sysMenu.delete({
+    return this.prisma.sysMenu.deleteMany({
       where: {
-        menuId
+        OR: [
+          {
+            menuId
+          },
+          {
+            menuType: "F",
+            parentId: menuId
+          }
+        ]
       }
     })
   }
