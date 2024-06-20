@@ -12,7 +12,8 @@
     <div v-else> <el-tag type="warning">未上传</el-tag></div>
   </div>
 </template>
-<script setup >
+<script setup>
+import { getFilePath } from "@/utils/ruoyi.js"
 const props = defineProps({
   fileList: {
     type: [Array, String],
@@ -31,7 +32,11 @@ const list = computed(() => {
     return list.map(item => {
       if (typeof item === "string") {
         item = { name: getFileName(item), url: item };
+      } else {
+        item.name = item.name || item.fileName
+        item.url = item.url || item.filePath
       }
+      item.url = getFilePath(item.url)
       return item;
     });
   } else {

@@ -29,7 +29,7 @@
 
 <script setup>
 import { getToken } from "@/utils/auth";
-
+import { getFilePath } from "@/utils/ruoyi.js"
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 数量限制
@@ -84,6 +84,7 @@ watch(() => props.modelValue, val => {
         item.name = item.name || item.fileName
         item.url = item.url || item.filePath
       }
+      item.url = getFilePath(item.url)
       item.uid = item.uid || new Date().getTime() + temp++;
       return item;
     });
@@ -183,8 +184,8 @@ function listToString(list, separator) {
   let strs = "";
   separator = separator || ",";
   for (let i in list) {
-    if (list[i].url) {
-      strs += list[i].url + separator;
+    if (undefined !== list[i].url && list[i].url.indexOf("blob:") !== 0) {
+      strs += list[i].url.replace(baseUrl, "") + separator;
     }
   }
   return strs != '' ? strs.substr(0, strs.length - 1) : '';

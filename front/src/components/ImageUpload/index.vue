@@ -28,7 +28,7 @@
 
 <script setup>
 import { getToken } from "@/utils/auth";
-
+import { getFilePath } from "@/utils/ruoyi.js"
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 图片数量限制
@@ -54,7 +54,7 @@ const props = defineProps({
   //是否返回filesList字符串，否则返回数组对象
   isFormat: {
     type: Boolean,
-    default:true
+    default: true
   },
 });
 
@@ -79,15 +79,12 @@ watch(() => props.modelValue, val => {
     // 然后将数组转为对象数组
     fileList.value = list.map(item => {
       if (typeof item === "string") {
-        if (item.indexOf(baseUrl) === -1) {
-          item = { name: baseUrl + item, url: baseUrl + item };
-        } else {
-          item = { name: item, url: item };
-        }
+        item = { name: item, url: item };
       } else {
         item.name = item.name || item.fileName
         item.url = item.url || item.filePath
       }
+      item.url = getFilePath(item.url)
       return item;
     });
   } else {
@@ -137,7 +134,7 @@ function handleExceed() {
 // 上传成功回调
 function handleUploadSuccess(res, file) {
   if (res.code === 200) {
-    uploadList.value.push({ name: res.fileName, url: baseUrl+res.url });
+    uploadList.value.push({ name: res.fileName, url: getFilePath(res.url) });
     uploadedSuccessfully();
   } else {
     number.value--;
@@ -153,11 +150,11 @@ function handleDelete(file) {
   const findex = fileList.value.map(f => f.name).indexOf(file.name);
   if (findex > -1 && uploadList.value.length === number.value) {
     fileList.value.splice(findex, 1);
-    
+
     if (props.isFormat) {
       emit("update:modelValue", listToString(fileList.value));
     } else {
-      emit("update:modelValue", fileList.value.map(v => (v.url=v.url.replace(baseUrl,""),v)));
+      emit("update:modelValue", fileList.value.map(v => (v.url = v.url.replace(baseUrl, ""), v)));
     }
     return false;
   }
@@ -169,11 +166,10 @@ function uploadedSuccessfully() {
     fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
     uploadList.value = [];
     number.value = 0;
-    console.log(props.isFormat)
     if (props.isFormat) {
       emit("update:modelValue", listToString(fileList.value));
     } else {
-      emit("update:modelValue", fileList.value.map(v => (v.url=v.url.replace(baseUrl,""),v)));
+      emit("update:modelValue", fileList.value.map(v => (v.url = v.url.replace(baseUrl, ""), v)));
     }
     proxy.$modal.closeLoading();
   }
