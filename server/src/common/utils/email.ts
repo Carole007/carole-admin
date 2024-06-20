@@ -28,7 +28,7 @@ function checkConnect() {
 /**
  * @description 发送邮件
  */
-async function sendMail(options: Mail.Options & { to: string }) {
+export async function sendMail(options: Mail.Options & { to: string }) {
   return new Promise(async (resolve, reject) => {
     let t = setTimeout(() => { reject("邮件发送失败:超时！") }, Config.mail.timeout)
     assert(options.to.split(",").every(v => isEmail(v)), "邮箱格式不正确！")
@@ -57,7 +57,7 @@ async function sendMail(options: Mail.Options & { to: string }) {
 /**
  * @desc 发送验证码模版
  */
-async function sendCode(email: string, code: string | number) {
+export async function sendCode(email: string, code: string | number) {
   let mail = {
     subject: '验证码',
     to: email,
@@ -186,8 +186,3 @@ async function sendCode(email: string, code: string | number) {
   return sendMail(mail)
 }
 
-
-export default { 
-  sendMail,
-  sendCode
-}
