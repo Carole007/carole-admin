@@ -1,5 +1,5 @@
 
-
+import { isExternal } from "./validate"
 /**
  * 通用js方法封装处理
  * Copyright (c) 2019 ruoyi
@@ -244,3 +244,7 @@ export function getNormalPath(p) {
 export function blobValidate(data) {
   return data.type !== 'application/json'
 }
+//获取文件或者图片地址
+export function getFilePath(path) {
+  return isExternal(path) ? path : import.meta.env.VITE_APP_BASE_API + path;
+ }
