@@ -169,7 +169,7 @@
     />
 
     <!-- 添加或修改${functionName}对话框 -->
-    <el-dialog :title="title" v-model="open" width="600px" append-to-body>
+    <el-dialog :title="title" v-model="open" width="clamp(350px,90%,600px)" append-to-body>
       <el-form ref="${businessName}Ref" :model="form" :rules="rules" label-width="100px">
 #foreach($column in $columns)
 #set($field=$column.javaField)
