@@ -136,7 +136,7 @@ export class AuthService {
       let cacheInfo = {
         tokenId: randomUUID(),
         userId: user.userId,
-        deptName: user.dept.deptName,
+        deptName: user.dept?.deptName,
         userName: loginInfo.userName,
         ipaddr: loginInfo.ipaddr,
         loginLocation: loginInfo.loginLocation,
