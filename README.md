@@ -44,20 +44,28 @@
 # 克隆项目
 git clone https://github.com/Carole007/carole-admin.git
 
+# 导入sql
+
+# 启动redis
+
 # 进入项目目录
 cd carole-admin/server
 
 # 安装依赖
 npm i  
 
-# 导入sql
-
-# 启动redis
+# 生生当前平台的引擎
+npx prisma generate
 
 # 修改server/src/里面的.env数据库连接配置，以及config.ts里面的redis连接配置，文件上传路径。
 
 # 启动服务
 npm run start:dev
+
+# 前台
+cd carole-admin/front 
+npm i
+npm run dev
 ```
 
 
@@ -358,6 +366,8 @@ async test() {
 >
 ### 注意
 
+- 项目打包时，可以在schema.prisma里的binaryTargets添加你想要运行的目标平台，执行 `npx prisma generate` 生成引擎，或者不动代码，到目标平台再执行一次 `npx prisma generate`
+
 - 执行时，确保model都写好表和字段的映射关系了 @@map映射表 @Map映射字段
 
   model名称使用PascalCase命名 比如： test -> Test, sys_config -> SysConfig，  如果你不使用代码生成器，无需这样。
@@ -498,8 +508,8 @@ async test3() {
 ```bash
 #后端
 cd server && npm run build
-# 把package.json移动到dist目录，上传dist目录到服务器，修改配置
-node main.js
+# 把package.json移动到dist目录，上传dist目录到服务器，修改配置文件， 执行 npx prisma generate生成当前系统的prisma引擎，
+pm2 start main.js
 
 #前端
 npm run build:prod
