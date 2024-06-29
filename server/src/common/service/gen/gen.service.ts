@@ -233,6 +233,8 @@ export class GenService {
           filename: kebabCase(info.tableName),
           entityName: camelCase(info.className),
           columnNames: JSON.stringify(info.columns?.map(v => v.columnComment || v.columnName) || []),
+          hasCreateTime: info.columnsKey.includes('create_time'),
+          hasUpdateTime: info.columnsKey.includes('update_time'),
           hasBaseDomain: info.columnsKey.includes("create_time") && info.columnsKey.includes("update_time") && info.columnsKey.includes("create_by") && info.columnsKey.includes("update_by")
         }
         let servicePath = join(__dirname, `temp/node/${data.packageName}/${data.moduleName}/${data.businessName}/service/${data.filename}.service.ts`)
@@ -304,6 +306,8 @@ export class GenService {
       filename: kebabCase(info.tableName),
       entityName: camelCase(info.className),
       columnNames: JSON.stringify(info.columns?.map(v => v.columnComment || v.columnName) || []),
+      hasCreateTime: info.columnsKey.includes('create_time'),
+      hasUpdateTime: info.columnsKey.includes('update_time'),
       hasBaseDomain: info.columnsKey.includes("create_time") && info.columnsKey.includes("update_time") && info.columnsKey.includes("create_by") && info.columnsKey.includes("update_by")
     }
     let vueTemplateStr = readFileSync(join(__dirname, "./gen-template/vue/index.vue.vm")).toString()

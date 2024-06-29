@@ -64,6 +64,13 @@ ${entityName} = {
             createBy: req.user?.userName,
             updateBy: req.user?.userName
         }
+        #else
+        #if(${hasCreateTime})
+${entityName}["createTime"] = nowDateTime()
+        #end
+        #if(${hasUpdateTime})
+${entityName}["updateTime"] = nowDateTime()
+        #end
         #end
 return Result.ok(await this.${businessName}Service.add${BusinessName}(${entityName}))
     }
@@ -80,6 +87,8 @@ ${entityName} = {
             updateTime: nowDateTime(),
             updateBy: req.user?.userName
         }
+        #elseif(${hasUpdateTime})
+${entityName}["updateTime"] = nowDateTime()
         #end
 await this.${businessName}Service. update${BusinessName}(${entityName})
         return Result.ok("修改成功！")
