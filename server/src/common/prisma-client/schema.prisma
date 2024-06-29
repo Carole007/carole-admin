@@ -293,7 +293,9 @@ generator client {
   provider        = "prisma-client-js"
   output          = "./common/prisma-client"
   previewFeatures = ["views", "relationJoins", "prismaSchemaFolder", "omitApi"]
-  binaryTargets   = ["darwin", "windows", "linux-musl", "debian-openssl-3.0.x"]
+  //这里可以指定平台引擎，native就是当前系统， 如果需要其他系统的自行添加，或者到目标系统执行npx prisma generate
+  binaryTargets   = ["native"]
+  // binaryTargets   = ["native", "windows", "linux-musl","debian-openssl-3.0.x","darwin","darwin-arm64"]
 }
 
 datasource db {
