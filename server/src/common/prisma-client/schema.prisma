@@ -293,7 +293,8 @@ generator client {
   provider        = "prisma-client-js"
   output          = "./common/prisma-client"
   previewFeatures = ["views", "relationJoins", "prismaSchemaFolder", "omitApi"]
-  binaryTargets   = ["darwin", "windows", "linux-musl", "debian-openssl-3.0.x"]
+  //可以选择自己的平台，这里我就全部一起指定了
+  binaryTargets   = ["darwin", "windows", "linux-musl", "debian-openssl-3.0.x", "darwin-arm64"]
 }
 
 datasource db {
