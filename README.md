@@ -412,6 +412,9 @@ model SysConfig {
 
 ## 代码生成使用
 
+
+详细教程：https://juejin.cn/post/7385743189636808719
+
 1、在prisma\schema写好对应表的Model，字段名驼峰映射
 
 2、登录系统（系统工具 -> 代码生成 -> 导入对应表）
