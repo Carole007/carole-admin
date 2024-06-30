@@ -32,7 +32,7 @@ export class DictDataController {
   @ApiOperation({ summary: "根据字典类型查询字典数据信息" })
   async getDicts(@Param("type") type: string) {
     if (!type) return Result.Validation("请传入字典类型")
-    return Result.ok(await this.dictDataService.selectDictDataByDictType(type))
+    return Result.ok(await this.dictDataService.selectDictDataByDictType(type) || [])
   }
   @Get(":id")
   @ApiOperation({ summary: "查询字典数据详细" })
