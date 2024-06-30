@@ -6,7 +6,7 @@ import { Query${className}Dto, Create${className}Dto, Update${className}Dto } fr
 import { Prisma } from '@prismaClient';
 import { isNotEmpty,isEmpty } from 'class-validator';
 @Injectable()
-export class ${BusinessName}Service {
+export class ${className}Service {
   constructor(private prisma: PrismaService) { }
   #set($service="this.prisma."+$modelName)
 

@@ -4,7 +4,7 @@ import Result from '@/common/result/Result';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { RequirePermission } from '@/common/decorator/require-premission.decorator';
 import { nowDateTime } from '@/common/utils';
-import { ${BusinessName}Service } from './service/${filename}.service';
+import { ${className}Service } from './service/${filename}.service';
 import { Query${className}Dto, Create${className}Dto, Update${className}Dto } from './dto/index';
 import { Response } from 'express';
 import { $modelName1 } from '@prismaClient';
@@ -13,7 +13,7 @@ import { TableDataInfo } from '@/common/domain/TableDataInfo';
 @ApiBearerAuth()
 @Controller('${moduleName}/${businessName}')
 export class ${className}Controller {
-    constructor(private ${businessName}Service: ${BusinessName}Service) { } 
+    constructor(private ${businessName}Service: ${className}Service) { } 
 
     @ApiOperation({ summary: "查询${functionName}列表" })
     @ApiQuery({type:Query${className}Dto})
