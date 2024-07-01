@@ -1,32 +1,32 @@
 import { RedisOptions } from 'ioredis';
 interface config {
-  port: number
-  contextPath: string
+  port: number;
+  contextPath: string;
   swagger: {
-    enable: boolean
-    prefix: string
-  }
+    enable: boolean;
+    prefix: string;
+  };
   captcha: {
-    mode: "text" | "math"
-    expiresIn: number
-  }
+    mode: 'text' | 'math';
+    expiresIn: number;
+  };
   rateLimit: {
-    storage:"memory"|"redis",
-    ttl: number
-    limit: number
-  }
+    storage: 'memory' | 'redis';
+    ttl: number;
+    limit: number;
+  };
   crypto: {
-    psdSecret: string
-  }
+    psdSecret: string;
+  };
   token: {
-    secret: string
-    expiresIn: number
-  }
+    secret: string;
+    expiresIn: number;
+  };
   prisma: {
     logEnable: boolean;
     log: LogLevel[];
-  }
-  redis: RedisOptions
+  };
+  redis: RedisOptions;
   upload: {
     path: string;
     config: {
@@ -47,16 +47,16 @@ interface config {
         fieldNameSize: number;
         parts: number;
         headerPairs: number;
-      }
+      };
     };
-  }
+  };
   gen: {
     author: string;
     packageName: string;
     moduleName: string;
     autoRemovePre: boolean;
     tablePrefix: string[];
-  },
+  };
   mail: {
     enable: boolean;
     timeout: number;
@@ -72,5 +72,5 @@ interface config {
         rejectUnauthorized: boolean;
       };
     };
-  }
+  };
 }

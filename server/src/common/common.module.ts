@@ -4,8 +4,8 @@ import { AuthService } from './service/auth/auth.service';
 import { GenService } from './service/gen/gen.service';
 @Global()
 @Module({
-  providers:[PrismaService,AuthService,GenService],
-  exports: [PrismaService,AuthService],
-  imports:[]
+  providers: [PrismaService, AuthService, GenService],
+  exports: [PrismaService, AuthService],
+  imports: [],
 })
 export class CommonModule {}

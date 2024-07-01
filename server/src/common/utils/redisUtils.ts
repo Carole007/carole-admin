@@ -6,27 +6,32 @@ const redisConfig: RedisOptions = {
   host: Config.redis.host || 'localhost',
   port: Config.redis.port || 6379,
   db: Config.redis.db || 0,
-  disconnectTimeout: 60 * 5 * 1000
-}
+  disconnectTimeout: 60 * 5 * 1000,
+};
 class RedisUtils {
   private pool: Pool<Redis>;
   constructor(config: RedisOptions) {
-    this.pool = createPool({
-      create: async () => {
-        return new Redis(config);
+    this.pool = createPool(
+      {
+        create: async () => {
+          return new Redis(config);
+        },
+        destroy: async (client) => {
+          await client.quit();
+        },
       },
-      destroy: async (client) => {
-        await client.quit()
-      }
-    }, {
-      max: 10,
-      min: 2,
-      idleTimeoutMillis: 60 * 5 * 1000,
-      acquireTimeoutMillis: 8 * 1000,
-    });
+      {
+        max: 10,
+        min: 2,
+        idleTimeoutMillis: 60 * 5 * 1000,
+        acquireTimeoutMillis: 8 * 1000,
+      },
+    );
   }
 
-  private async useClient<T>(callback: (client: Redis) => Promise<T>): Promise<T> {
+  private async useClient<T>(
+    callback: (client: Redis) => Promise<T>,
+  ): Promise<T> {
     const client = await this.pool.acquire();
     try {
       return await callback(client);
@@ -137,27 +142,24 @@ class RedisUtils {
         return {
           commandStats: parsedCommandStats,
           info: parsedInfo,
-          dbSize: dbSize
-        }
+          dbSize: dbSize,
+        };
       } catch (err) {
         console.error('Error fetching Redis info:', err);
       }
-    })
+    });
   }
 }
 
 const redisUtils = new RedisUtils(redisConfig);
-redisUtils.testConnection()
+redisUtils.testConnection();
 
-export {
-  redisUtils
-}
-
+export { redisUtils };
 
 function parseRedisInfo(info) {
   const lines = info.split('\r\n');
   const result = {};
-  lines.forEach(line => {
+  lines.forEach((line) => {
     if (line && line[0] !== '#') {
       const parts = line.split(':');
       if (parts.length === 2) {
@@ -171,18 +173,18 @@ function parseRedisInfo(info) {
 function parseCommandStats(commandStats) {
   const lines = commandStats.split('\r\n');
   const result = [];
-  lines.forEach(line => {
+  lines.forEach((line) => {
     if (line && line.startsWith('cmdstat_')) {
       const parts = line.split(':');
       if (parts.length === 2) {
         const name = parts[0].substring(8);
         const values = parts[1].split(',');
         const valueObj: any = {};
-        values.forEach(value => {
+        values.forEach((value) => {
           const [key, val] = value.split('=');
           valueObj[key] = val;
         });
-        result.push({ name: name, value: valueObj?.calls || "0" });
+        result.push({ name: name, value: valueObj?.calls || '0' });
       }
     }
   });

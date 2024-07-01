@@ -13,46 +13,55 @@ import { Response } from 'express';
 
 @Injectable()
 export class SysDictDataService implements OnModuleInit {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   onModuleInit() {
-    this.initSysDictData()
+    this.initSysDictData();
   }
   //初始化字典数据
   async initSysDictData() {
-    let dictData = groupBy((await this.prisma.sysDictData.findMany()), "dictType")
-    for (let dictKey in dictData) {
-      await redisUtils.set(Constants.SYS_DICT_KEY + dictKey, JSON.stringify(dictData[dictKey], null, 2))
+    const dictData = groupBy(
+      await this.prisma.sysDictData.findMany(),
+      'dictType',
+    );
+    for (const dictKey in dictData) {
+      await redisUtils.set(
+        Constants.SYS_DICT_KEY + dictKey,
+        JSON.stringify(dictData[dictKey], null, 2),
+      );
     }
-    console.log("字典信息初始化完毕！")
+    console.log('字典信息初始化完毕！');
   }
 
   //根据字典类型更新redis字典数据
-  async updateCache(dictType:string) { 
-    let dictDatas = await this.prisma.sysDictData.findMany({
+  async updateCache(dictType: string) {
+    const dictDatas = await this.prisma.sysDictData.findMany({
       where: {
-        dictType
-      }
-    })
-    return await redisUtils.set(Constants.SYS_DICT_KEY + dictType, JSON.stringify(dictDatas, null, 2))
+        dictType,
+      },
+    });
+    return await redisUtils.set(
+      Constants.SYS_DICT_KEY + dictType,
+      JSON.stringify(dictDatas, null, 2),
+    );
   }
 
   //查询字典数据列表
   async selectDictDataList(q: queryDictDataDto) {
-    let queryCondition: Prisma.SysDictDataWhereInput = {}
+    const queryCondition: Prisma.SysDictDataWhereInput = {};
     if (isNotEmpty(q.dictType)) {
       queryCondition.dictType = {
-        equals: q.dictType
-      }
+        equals: q.dictType,
+      };
     }
     if (isNotEmpty(q.dictLabel)) {
       queryCondition.dictLabel = {
-        contains: q.dictLabel
-      }
+        contains: q.dictLabel,
+      };
     }
     if (isNotEmpty(q.status)) {
       queryCondition.status = {
-        equals: q.status
-      }
+        equals: q.status,
+      };
     }
     return {
       rows: await this.prisma.sysDictData.findMany({
@@ -60,80 +69,100 @@ export class SysDictDataService implements OnModuleInit {
         take: q.pageSize,
         where: queryCondition,
         orderBy: {
-          dictSort: "asc"
-        }
+          dictSort: 'asc',
+        },
       }),
       total: await this.prisma.sysDictData.count({
-        where: queryCondition
-      })
-    }
+        where: queryCondition,
+      }),
+    };
   }
   //查询所有数据
   async selectAllDictData() {
-    return await this.prisma.sysDictData.findMany()
+    return await this.prisma.sysDictData.findMany();
   }
 
   //查询字典数据详细
   async selectDictDataDetail(dictCode: number) {
     return this.prisma.sysDictData.findUnique({
       where: {
-        dictCode: dictCode
-      }
-    })
+        dictCode: dictCode,
+      },
+    });
   }
 
   //根据字典类型查询字典数据信息
   async selectDictDataByDictType(dictType: string) {
-    return JSON.parse(await redisUtils.get(Constants.SYS_DICT_KEY + dictType) || null)
+    return JSON.parse(
+      (await redisUtils.get(Constants.SYS_DICT_KEY + dictType)) || null,
+    );
   }
 
   //新增字典数据
   async addDictData(dictData: CreateDictDataDto) {
-    let res = await this.prisma.sysDictData.create({
-      data: dictData
-    })
-    await this.updateCache(dictData.dictType)
-    return res
+    const res = await this.prisma.sysDictData.create({
+      data: dictData,
+    });
+    await this.updateCache(dictData.dictType);
+    return res;
   }
 
   //修改字典数据
   async updateDictData(dictData: updateDictDataDto) {
-    let res = await this.prisma.sysDictData.update({
+    const res = await this.prisma.sysDictData.update({
       where: {
-        dictCode: dictData.dictCode
+        dictCode: dictData.dictCode,
       },
-      data: dictData
-    })
-    await this.updateCache(dictData.dictType)
-    return res
-
+      data: dictData,
+    });
+    await this.updateCache(dictData.dictType);
+    return res;
   }
   //删除字典数据
   async deleteDictData(dictCodes: number[]) {
-    let dictType = (await this.prisma.sysDictData.findFirst({
-      select: {
-        dictType:true
-      },
-      where: {
-        dictCode:dictCodes[0]
-      }
-    })).dictType
-    let res = await this.prisma.sysDictData.deleteMany({
+    const dictType = (
+      await this.prisma.sysDictData.findFirst({
+        select: {
+          dictType: true,
+        },
+        where: {
+          dictCode: dictCodes[0],
+        },
+      })
+    ).dictType;
+    const res = await this.prisma.sysDictData.deleteMany({
       where: {
         dictCode: {
-          in: dictCodes
-        }
-      }
-    })
-    await this.updateCache(dictType)
-    return res
+          in: dictCodes,
+        },
+      },
+    });
+    await this.updateCache(dictType);
+    return res;
   }
 
-  //导出xlsx文件 
+  //导出xlsx文件
   async exportDictData(res: Response) {
-    let title = ["字典编码", "字典排序", "字典标签", "字典键值", "字典类型", "样式属性", "表格回显样式", "是否默认", "状态", "创建者", "创建时间", "更新者", "更新时间", "备注"]
-    let data = (await this.prisma.sysDictData.findMany()).map(v => Object.values(v))
-    data.unshift(title)
-    exportTable(data, res)
+    const title = [
+      '字典编码',
+      '字典排序',
+      '字典标签',
+      '字典键值',
+      '字典类型',
+      '样式属性',
+      '表格回显样式',
+      '是否默认',
+      '状态',
+      '创建者',
+      '创建时间',
+      '更新者',
+      '更新时间',
+      '备注',
+    ];
+    const data = (await this.prisma.sysDictData.findMany()).map((v) =>
+      Object.values(v),
+    );
+    data.unshift(title);
+    exportTable(data, res);
   }
 }

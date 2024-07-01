@@ -2,67 +2,82 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/common/service/prisma/prisma.service';
 import { Response } from 'express';
 import { exportTable } from '@/common/utils';
-import { QuerySysRoleDto, CreateSysRoleDto, UpdateSysRoleDto, UpdateSysRoleStatusDto, QueryAllocatedListDto } from '../dto/index';
+import {
+  QuerySysRoleDto,
+  CreateSysRoleDto,
+  UpdateSysRoleDto,
+  UpdateSysRoleStatusDto,
+  QueryAllocatedListDto,
+} from '../dto/index';
 import { Prisma } from '@prismaClient';
 import { isArray, isNotEmpty } from 'class-validator';
 import * as assert from 'assert';
 import { AuthService } from '@/common/service/auth/auth.service';
 @Injectable()
 export class RoleService {
-  constructor(private prisma: PrismaService,private authService:AuthService) { }
+  constructor(
+    private prisma: PrismaService,
+    private authService: AuthService,
+  ) {}
   /**@description 查询角色管理所有 */
   async selectRoleAll() {
-    return this.prisma.sysRole.findMany()
+    return this.prisma.sysRole.findMany();
   }
   /**@description 分页查询角色管理列表 */
   async selectRoleList(q: QuerySysRoleDto) {
-    let queryCondition: Prisma.SysRoleWhereInput = {}
-    if (isNotEmpty(q["roleName"])) {
+    const queryCondition: Prisma.SysRoleWhereInput = {};
+    if (isNotEmpty(q['roleName'])) {
       queryCondition.roleName = {
-        contains: q.roleName
-      }
+        contains: q.roleName,
+      };
     }
-    if (isNotEmpty(q["roleKey"])) {
+    if (isNotEmpty(q['roleKey'])) {
       queryCondition.roleKey = {
-        contains: q.roleKey
-      }
+        contains: q.roleKey,
+      };
     }
-    if (isNotEmpty(q["roleSort"])) {
+    if (isNotEmpty(q['roleSort'])) {
       queryCondition.roleSort = {
-        equals: q.roleSort
-      }
+        equals: q.roleSort,
+      };
     }
-    if (isNotEmpty(q["dataScope"])) {
+    if (isNotEmpty(q['dataScope'])) {
       queryCondition.dataScope = {
-        equals: q.dataScope
-      }
+        equals: q.dataScope,
+      };
     }
-    if (isNotEmpty(q["menuCheckStrictly"])) {
+    if (isNotEmpty(q['menuCheckStrictly'])) {
       queryCondition.menuCheckStrictly = {
-        equals: q.menuCheckStrictly
-      }
+        equals: q.menuCheckStrictly,
+      };
     }
-    if (isNotEmpty(q["deptCheckStrictly"])) {
+    if (isNotEmpty(q['deptCheckStrictly'])) {
       queryCondition.deptCheckStrictly = {
-        equals: q.deptCheckStrictly
-      }
+        equals: q.deptCheckStrictly,
+      };
     }
-    if (isNotEmpty(q["status"])) {
+    if (isNotEmpty(q['status'])) {
       queryCondition.status = {
-        equals: q.status
-      }
+        equals: q.status,
+      };
     }
-    if (isNotEmpty(q.params.beginCreateTime) && isNotEmpty(q.params.endCreateTime)) {
+    if (
+      isNotEmpty(q.params.beginCreateTime) &&
+      isNotEmpty(q.params.endCreateTime)
+    ) {
       queryCondition.createTime = {
         lte: q.params.endCreateTime,
-        gte: q.params.beginCreateTime
-      }
+        gte: q.params.beginCreateTime,
+      };
     }
-    if (isNotEmpty(q.params.beginUpdateTime) && isNotEmpty(q.params.endUpdateTime)) {
+    if (
+      isNotEmpty(q.params.beginUpdateTime) &&
+      isNotEmpty(q.params.endUpdateTime)
+    ) {
       queryCondition.updateTime = {
         lte: q.params.endUpdateTime,
-        gte: q.params.beginUpdateTime
-      }
+        gte: q.params.beginUpdateTime,
+      };
     }
     return {
       rows: await this.prisma.sysRole.findMany({
@@ -71,30 +86,29 @@ export class RoleService {
         where: queryCondition,
       }),
       total: await this.prisma.sysRole.count({
-        where: queryCondition
-      })
-    }
+        where: queryCondition,
+      }),
+    };
   }
-
 
   /**@description 分页查询属于角色的用户列表 */
   async allocatedList(q: QueryAllocatedListDto) {
-    let queryCondition: Prisma.SysUserWhereInput = {
+    const queryCondition: Prisma.SysUserWhereInput = {
       roles: {
         some: {
-          roleId: q.roleId
-        }
-      }
-    }
+          roleId: q.roleId,
+        },
+      },
+    };
     if (isNotEmpty(q.userName)) {
       queryCondition.userName = {
-        contains: q.userName
-      }
+        contains: q.userName,
+      };
     }
     if (isNotEmpty(q.phoneNumber)) {
       queryCondition.phonenumber = {
-        contains: q.phoneNumber
-      }
+        contains: q.phoneNumber,
+      };
     }
     return {
       rows: await this.prisma.sysUser.findMany({
@@ -103,31 +117,31 @@ export class RoleService {
         where: queryCondition,
       }),
       total: await this.prisma.sysUser.count({
-        where: queryCondition
-      })
-    }
+        where: queryCondition,
+      }),
+    };
   }
 
   /**@description 分页查询不属于角色的用户列表 */
   async unallocatedList(q: QueryAllocatedListDto) {
-    let queryCondition: Prisma.SysUserWhereInput = {
+    const queryCondition: Prisma.SysUserWhereInput = {
       roles: {
         every: {
           roleId: {
-            not: q.roleId
-          }
-        }
-      }
-    }
+            not: q.roleId,
+          },
+        },
+      },
+    };
     if (isNotEmpty(q.userName)) {
       queryCondition.userName = {
-        contains: q.userName
-      }
+        contains: q.userName,
+      };
     }
     if (isNotEmpty(q.phoneNumber)) {
       queryCondition.phonenumber = {
-        contains: q.phoneNumber
-      }
+        contains: q.phoneNumber,
+      };
     }
     return {
       rows: await this.prisma.sysUser.findMany({
@@ -136,208 +150,232 @@ export class RoleService {
         where: queryCondition,
       }),
       total: await this.prisma.sysUser.count({
-        where: queryCondition
-      })
-    }
+        where: queryCondition,
+      }),
+    };
   }
 
   //批量添加授权用户
   async addRoleUser(roleId: number, userIds: number[]) {
-    if (!userIds.length) return null
+    if (!userIds.length) return null;
     await this.prisma.sysUserRole.createMany({
-      data: userIds.map(v => ({
+      data: userIds.map((v) => ({
         userId: v,
-        roleId
-      }))
-    })
-    userIds.forEach(v => this.authService.refreshUserInfo(v))
-    return true
+        roleId,
+      })),
+    });
+    userIds.forEach((v) => this.authService.refreshUserInfo(v));
+    return true;
   }
 
   //批量取消授权用户
   async cancelRoleUser(roleId: number, userIds: number[]) {
-    if (!userIds.length) return null
-    await  this.prisma.sysUserRole.deleteMany({
+    if (!userIds.length) return null;
+    await this.prisma.sysUserRole.deleteMany({
       where: {
         roleId,
         userId: {
-          in: userIds
-        }
-      }
-    })
-    userIds.forEach(v => this.authService.refreshUserInfo(v))
-    return true
+          in: userIds,
+        },
+      },
+    });
+    userIds.forEach((v) => this.authService.refreshUserInfo(v));
+    return true;
   }
 
   /**@description 查询角色管理详情 */
   async selectRoleByRoleId(roleId: number) {
     return this.prisma.sysRole.findUnique({
       where: {
-        roleId
-      }
-    })
+        roleId,
+      },
+    });
   }
   /**@description 新增角色管理 */
   async addRole(sysRole: CreateSysRoleDto) {
     //删除掉空值
-    for (let key in sysRole) {
-      !isNotEmpty(sysRole[key]) && delete sysRole[key]
+    for (const key in sysRole) {
+      !isNotEmpty(sysRole[key]) && delete sysRole[key];
     }
     return this.prisma.$transaction(async (db) => {
-      let { menuIds, deptIds, ...role } = sysRole
-      let addRole = await db.sysRole.create({
-        data: role
-      })
+      const { menuIds, ...role } = sysRole;
+      const addRole = await db.sysRole.create({
+        data: role,
+      });
       if (isArray(menuIds) && menuIds.length) {
         await db.sysRoleMenu.createMany({
-          data: menuIds.map(v => ({ menuId: v, roleId: addRole.roleId }))
-        })
+          data: menuIds.map((v) => ({ menuId: v, roleId: addRole.roleId })),
+        });
       }
-      return addRole
-    })
-
+      return addRole;
+    });
   }
   /**@description 修改角色管理 */
   async updateRole(sysRole: UpdateSysRoleDto) {
     //删除掉空值
-    for (let key in sysRole) {
-      !isNotEmpty(sysRole[key]) && delete sysRole[key]
+    for (const key in sysRole) {
+      !isNotEmpty(sysRole[key]) && delete sysRole[key];
     }
     return this.prisma.$transaction(async (db) => {
-      let { menuIds, deptIds, ...role } = sysRole
-      await db.sysRoleMenu.deleteMany({ where: { roleId: role.roleId } })
-      let res = await db.sysRole.update({
+      const { menuIds, ...role } = sysRole;
+      await db.sysRoleMenu.deleteMany({ where: { roleId: role.roleId } });
+      const res = await db.sysRole.update({
         where: {
-          roleId: role.roleId
+          roleId: role.roleId,
         },
-        data: role
-      })
+        data: role,
+      });
       if (isArray(menuIds) && menuIds.length) {
         await db.sysRoleMenu.createMany({
-          data: menuIds.map(v => ({ menuId: v, roleId: res.roleId }))
-        })
+          data: menuIds.map((v) => ({ menuId: v, roleId: res.roleId })),
+        });
       }
       //更新属于这个角色的用户的缓存信息
-      { 
-        let userIds = [...new Set((await db.sysUserRole.findMany({
-          where: {roleId:sysRole.roleId}
-        })).map(v => v.userId))]
-        userIds.forEach(userId => { 
-          this.authService.refreshUserInfo(userId)
-        })
+      {
+        const userIds = [
+          ...new Set(
+            (
+              await db.sysUserRole.findMany({
+                where: { roleId: sysRole.roleId },
+              })
+            ).map((v) => v.userId),
+          ),
+        ];
+        userIds.forEach((userId) => {
+          this.authService.refreshUserInfo(userId);
+        });
       }
-      return res
-    })
+      return res;
+    });
   }
   /**@description 批量删除角色管理 */
   async deleteRoleByRoleIds(roleIds: number[]) {
-    let userroles = await this.prisma.sysUserRole.findFirst({
+    const userroles = await this.prisma.sysUserRole.findFirst({
       where: {
-        roleId: { in: roleIds }
-      }
-    })
-    assert(!userroles, "角色已被分配！")
+        roleId: { in: roleIds },
+      },
+    });
+    assert(!userroles, '角色已被分配！');
     return this.prisma.$transaction(async (db) => {
       await db.sysRoleDept.deleteMany({
         where: {
           roleId: {
-            in: roleIds
-          }
-        }
-      })
+            in: roleIds,
+          },
+        },
+      });
       await db.sysRoleMenu.deleteMany({
         where: {
           roleId: {
-            in: roleIds
-          }
-        }
-      })
+            in: roleIds,
+          },
+        },
+      });
       return db.sysRole.deleteMany({
         where: {
           roleId: {
-            in: roleIds
-          }
-        }
-      })
-    })
-
+            in: roleIds,
+          },
+        },
+      });
+    });
   }
   /**@description 单个删除角色管理 */
   async deleteRoleByRoleId(roleId: number) {
-    let userroles = await this.prisma.sysUserRole.findFirst({
+    const userroles = await this.prisma.sysUserRole.findFirst({
       where: {
-        roleId
-      }
-    })
-    assert(!userroles, "角色已被分配！")
+        roleId,
+      },
+    });
+    assert(!userroles, '角色已被分配！');
     return this.prisma.$transaction(async (db) => {
       await db.sysRoleDept.deleteMany({
         where: {
-          roleId
-        }
-      })
+          roleId,
+        },
+      });
       await db.sysRoleMenu.deleteMany({
         where: {
-          roleId
-        }
-      })
+          roleId,
+        },
+      });
       return db.sysRole.deleteMany({
         where: {
-          roleId
-        }
-      })
-    })
+          roleId,
+        },
+      });
+    });
   }
   /**@description 导出角色管理所有数据为xlsx */
   async exportRole(res: Response) {
-    let title = ["角色ID", "角色名称", "角色权限字符串", "显示顺序", "数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）", "菜单树选择项是否关联显示", "部门树选择项是否关联显示", "角色状态（0停用 1正常）", "删除标志（0删除 1存在）", "创建者", "创建时间", "更新者", "更新时间", "备注"]
-    let data = (await this.prisma.sysRole.findMany()).map(v => Object.values(v))
-    data.unshift(title)
-    exportTable(data, res)
+    const title = [
+      '角色ID',
+      '角色名称',
+      '角色权限字符串',
+      '显示顺序',
+      '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
+      '菜单树选择项是否关联显示',
+      '部门树选择项是否关联显示',
+      '角色状态（0停用 1正常）',
+      '删除标志（0删除 1存在）',
+      '创建者',
+      '创建时间',
+      '更新者',
+      '更新时间',
+      '备注',
+    ];
+    const data = (await this.prisma.sysRole.findMany()).map((v) =>
+      Object.values(v),
+    );
+    data.unshift(title);
+    exportTable(data, res);
   }
-/**@description 更新角色状态 */
+  /**@description 更新角色状态 */
   async updateStatus(role: UpdateSysRoleStatusDto) {
-    let res = await this.prisma.sysRole.update({
+    const res = await this.prisma.sysRole.update({
       where: {
-        roleId: role.roleId
+        roleId: role.roleId,
       },
-      data: role
-    })
+      data: role,
+    });
     //更新属于这个角色的用户的缓存信息
-    { 
-      let userIds = [...new Set((await this.prisma.sysUserRole.findMany({
-        where: {roleId:role.roleId}
-      })).map(v => v.userId))]
-      userIds.forEach(userId => { 
-        this.authService.refreshUserInfo(userId)
-      })
+    {
+      const userIds = [
+        ...new Set(
+          (
+            await this.prisma.sysUserRole.findMany({
+              where: { roleId: role.roleId },
+            })
+          ).map((v) => v.userId),
+        ),
+      ];
+      userIds.forEach((userId) => {
+        this.authService.refreshUserInfo(userId);
+      });
     }
-    return res
+    return res;
   }
-
 
   /**@description 分配数据权限 */
   async dataScope(sysRole: UpdateSysRoleDto) {
     //删除掉空值
-    for (let key in sysRole) {
-      !isNotEmpty(sysRole[key]) && delete sysRole[key]
+    for (const key in sysRole) {
+      !isNotEmpty(sysRole[key]) && delete sysRole[key];
     }
     return this.prisma.$transaction(async (db) => {
-      let { menuIds, deptIds, ...role } = sysRole
-      await db.sysRoleDept.deleteMany({ where: { roleId: role.roleId } })
+      const { deptIds, ...role } = sysRole;
+      await db.sysRoleDept.deleteMany({ where: { roleId: role.roleId } });
       await db.sysRole.update({
         where: {
-          roleId: role.roleId
+          roleId: role.roleId,
         },
-        data: role
-      })
+        data: role,
+      });
       if (isArray(deptIds) && deptIds.length) {
         return await db.sysRoleDept.createMany({
-          data: deptIds.map(v => ({ deptId: v, roleId: role.roleId }))
-        })
+          data: deptIds.map((v) => ({ deptId: v, roleId: role.roleId })),
+        });
       }
-    })
+    });
   }
-  
-
 }

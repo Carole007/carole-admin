@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { CaptchaController } from '@/admin/common/captcha/captcha.controller';
 import { UploadController } from './common/upload/upload.controller';
 import { AuthController } from './system/auth/auth.controller';
@@ -27,7 +27,37 @@ import { SysLogininforController } from './system/logininfor/sys-logininfor.cont
 import { monitorController } from './system/monitor/monitor.controller';
 @Module({
   imports: [],
-  controllers: [CaptchaController, UploadController, AuthController, SysDeptController, SysConfigController, DictDataController, DictTypeController, SysMenuController, SysPostController, SysRoleController,GenController,SysUserController,SysNoticeController,SysLogininforController,monitorController],
-  providers: [ DeptService, MenuService, ConfigService, LogininforService, MenuService, NoticeService, PostService, RoleService, GenService, SysDictDataService, SysDictTypeService,UserService,LogininforService],
+  controllers: [
+    CaptchaController,
+    UploadController,
+    AuthController,
+    SysDeptController,
+    SysConfigController,
+    DictDataController,
+    DictTypeController,
+    SysMenuController,
+    SysPostController,
+    SysRoleController,
+    GenController,
+    SysUserController,
+    SysNoticeController,
+    SysLogininforController,
+    monitorController,
+  ],
+  providers: [
+    DeptService,
+    MenuService,
+    ConfigService,
+    LogininforService,
+    MenuService,
+    NoticeService,
+    PostService,
+    RoleService,
+    GenService,
+    SysDictDataService,
+    SysDictTypeService,
+    UserService,
+    LogininforService,
+  ],
 })
 export class AdminModule {}

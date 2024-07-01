@@ -1,12 +1,12 @@
-import { Config } from "@/config";
-import { createTransport, Transporter } from "nodemailer"
-import * as assert from "assert"
-import Mail from "nodemailer/lib/mailer";
-import { isEmail } from "class-validator";
+import { Config } from '@/config';
+import { createTransport, Transporter } from 'nodemailer';
+import * as assert from 'assert';
+import Mail from 'nodemailer/lib/mailer';
+import { isEmail } from 'class-validator';
 let transporter: Transporter;
 if (Config.mail.enable) {
-  transporter = createTransport(Config.mail.config)
-  checkConnect()
+  transporter = createTransport(Config.mail.config);
+  checkConnect();
 }
 
 // 测试发件
@@ -20,9 +20,10 @@ test() */
  * @desc 检查邮箱服务器是否能正常连接！
  */
 function checkConnect() {
-  return transporter.verify()
-    .then(_ => console.log("邮箱服务器连接成功！"))
-    .catch(error => console.log("邮箱服务器连接失败！", error));
+  return transporter
+    .verify()
+    .then(() => console.log('邮箱服务器连接成功！'))
+    .catch((error) => console.log('邮箱服务器连接失败！', error));
 }
 
 /**
@@ -30,35 +31,39 @@ function checkConnect() {
  */
 export async function sendMail(options: Mail.Options & { to: string }) {
   return new Promise(async (resolve, reject) => {
-    let t = setTimeout(() => { reject("邮件发送失败:超时！") }, Config.mail.timeout)
-    assert(options.to.split(",").every(v => isEmail(v)), "邮箱格式不正确！")
+    const t = setTimeout(() => {
+      reject('邮件发送失败:超时！');
+    }, Config.mail.timeout);
+    assert(
+      options.to.split(',').every((v) => isEmail(v)),
+      '邮箱格式不正确！',
+    );
     options = {
       subject: '我是一封神奇的邮箱！',
       from: Config.mail.config.auth.user,
-      text: "测试！！！",
+      text: '测试！！！',
       // to: '',//发送到多个用户中间用,连接
       // text: 'test',//发送文本
       // html: '<h1>Hello,world!</h1>', //可以发送html
       ...options,
-    }
+    };
     try {
-      let res = await transporter.sendMail(options)
-      return resolve("邮件发送成功~ ：" + res.accepted.toString());
+      const res = await transporter.sendMail(options);
+      return resolve('邮件发送成功~ ：' + res.accepted.toString());
     } catch (err) {
-      console.log("邮件发送失败！", err)
-      return reject("邮件发送失败！");
+      console.log('邮件发送失败！', err);
+      return reject('邮件发送失败！');
     } finally {
-      clearTimeout(t)
+      clearTimeout(t);
     }
-  })
+  });
 }
-
 
 /**
  * @desc 发送验证码模版
  */
 export async function sendCode(email: string, code: string | number) {
-  let mail = {
+  const mail = {
     subject: '验证码',
     to: email,
     html: `
@@ -181,8 +186,7 @@ export async function sendCode(email: string, code: string | number) {
       </p>
     </div>
   </div>
-    `
-  }
-  return sendMail(mail)
+    `,
+  };
+  return sendMail(mail);
 }
-

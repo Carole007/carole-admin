@@ -6,48 +6,53 @@ import Result from '@/common/result/Result';
 import { Constants } from '@/common/constant/Constants';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import CaptchaImageVo from './vo/CaptchaImageVo';
-import { randomUUID } from "crypto"
+import { randomUUID } from 'crypto';
 import { Throttle } from '@nestjs/throttler';
-@ApiTags("验证码模块")
+@ApiTags('验证码模块')
 @Controller('/captchaImage')
 export class CaptchaController {
-
   /*
-  * 生成验证码
-  * */
+   * 生成验证码
+   * */
   @Get()
   @ApiOperation({
-    summary: "获取验证码"
+    summary: '获取验证码',
   })
   @ApiOkResponse({
-    type: CaptchaImageVo
+    type: CaptchaImageVo,
   })
   @Throttle({
     default: {
       limit: 8,
-      ttl:1000 * 60
-    }
+      ttl: 1000 * 60,
+    },
   })
   async getCaptchaImage() {
-    let map = {
-      "math": createMath,
-      "text": createText
-    }
+    const map = {
+      math: createMath,
+      text: createText,
+    };
     //根据配置的是math还是text自动调用方法生成数据
-    let captchaInfo = map[Config.captcha.mode]();
+    const captchaInfo = map[Config.captcha.mode]();
     //是否开启验证码
-    let enable = await redisUtils.get(Constants.SYS_CONFIG_KEY + "sys.account.captchaEnabled")
-    let captchaEnabled: boolean = enable == "" ? true : enable === "true"
-    let data = {
+    const enable = await redisUtils.get(
+      Constants.SYS_CONFIG_KEY + 'sys.account.captchaEnabled',
+    );
+    const captchaEnabled: boolean = enable == '' ? true : enable === 'true';
+    const data = {
       captchaEnabled,
       img: captchaInfo.data,
-      uuid: randomUUID()
-    }
+      uuid: randomUUID(),
+    };
     try {
-      await redisUtils.set(Constants.CAPTCHA_CODE_KEY + data.uuid, captchaInfo.text.toLowerCase(), Config.captcha.expiresIn)
-      return data
+      await redisUtils.set(
+        Constants.CAPTCHA_CODE_KEY + data.uuid,
+        captchaInfo.text.toLowerCase(),
+        Config.captcha.expiresIn,
+      );
+      return data;
     } catch (err) {
-      return Result.Error("生成验证码错误，请重试")
+      return Result.Error('生成验证码错误，请重试');
     }
   }
 }
