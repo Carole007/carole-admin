@@ -54,7 +54,7 @@ cd carole-admin/server
 # 安装依赖
 npm i  
 
-# 生生当前平台的引擎 下载失败多执行几次或者换网络
+# 生成当前平台的引擎 下载失败多执行几次或者换网络
 npx prisma generate
 
 # 修改server/src/里面的.env数据库连接配置，以及config.ts里面的redis连接配置，文件上传路径。
