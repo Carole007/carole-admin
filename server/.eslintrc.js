@@ -28,6 +28,7 @@ module.exports = {
     'prefer-const': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    'quotes': ['0'] //忽略单双引号
   },
   overrides: [
     {
