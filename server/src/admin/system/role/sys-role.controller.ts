@@ -47,7 +47,6 @@ export class SysRoleController {
     private prisma: PrismaService,
   ) {}
   @ApiOperation({ summary: '查询角色管理列表' })
-  @ApiQuery({ type: QuerySysRoleDto })
   @ApiResponse({ type: TableDataInfo<SysRole> })
   @RequirePermission('system:role:query')
   @Get('/list')
@@ -56,7 +55,6 @@ export class SysRoleController {
   }
 
   @ApiOperation({ summary: '查询属于角色的用户管理列表' })
-  @ApiQuery({ type: QuerySysRoleDto })
   @RequirePermission('system:role:query')
   @Get('/authUser/allocatedList')
   async listAllocatedList(@Query() q: QueryAllocatedListDto) {
@@ -64,7 +62,6 @@ export class SysRoleController {
   }
 
   @ApiOperation({ summary: '查询不属于角色的用户管理列表' })
-  @ApiQuery({ type: QuerySysRoleDto })
   @RequirePermission('system:role:query')
   @Get('authUser/unallocatedList')
   async listUnallocatedList(@Query() q: QueryAllocatedListDto) {

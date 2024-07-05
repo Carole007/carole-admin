@@ -5,18 +5,18 @@ import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 import { queryDomain } from '@/common/domain/queryDomain';
 /**@description 查询岗位信息表Dto */
 export class QuerySysPostDto extends queryDomain {
-  @ApiProperty({ description: '岗位编码' })
+  @ApiProperty({ description: '岗位编码',required:false })
   @IsOptional()
   postCode: string | null;
-  @ApiProperty({ description: '岗位名称' })
+  @ApiProperty({ description: '岗位名称',required:false })
   @IsOptional()
   postName: string | null;
-  @ApiProperty({ description: '显示顺序' })
+  @ApiProperty({ description: '显示顺序',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   postSort: number | null;
-  @ApiProperty({ description: '状态（0停用 1正常）' })
+  @ApiProperty({ description: '状态（0停用 1正常）',required:false })
   @IsOptional()
   status: string | null;
 }
@@ -39,23 +39,23 @@ export class CreateSysPostDto extends BaseDomain {
   @IsNotEmpty({ message: '状态（0停用 1正常）不能为空' })
   @IsString()
   status: string;
-  @ApiProperty({ description: '创建者' })
+  @ApiProperty({ description: '创建者',required:false })
   @IsOptional()
   @IsString()
   createBy?: string;
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: '创建时间',required:false })
   @IsOptional()
   @IsString()
   createTime?: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: '备注',required:false })
   @IsOptional()
   @IsString()
   remark?: string;
@@ -84,15 +84,15 @@ export class UpdateSysPostDto extends BaseDomain {
   @IsNotEmpty({ message: '状态（0停用 1正常）不能为空' })
   @IsString()
   status: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: '备注',required:false })
   @IsOptional()
   @IsString()
   remark?: string;

@@ -38,7 +38,6 @@ import { TableDataInfo } from '@/common/domain/TableDataInfo';
 export class SysNoticeController {
   constructor(private noticeService: NoticeService) {}
   @ApiOperation({ summary: '查询通知公告表列表' })
-  @ApiQuery({ type: QuerySysNoticeDto })
   @ApiResponse({ type: TableDataInfo<SysNotice> })
   @RequirePermission('system:notice:query')
   @Get('/list')

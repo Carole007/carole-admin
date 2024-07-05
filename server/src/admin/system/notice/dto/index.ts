@@ -5,13 +5,13 @@ import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 import { queryDomain } from '@/common/domain/queryDomain';
 /**@description 查询通知公告表Dto */
 export class QuerySysNoticeDto extends queryDomain {
-  @ApiProperty({ description: '公告标题' })
+  @ApiProperty({ description: '公告标题',required:false })
   @IsOptional()
   noticeTitle: string | null;
-  @ApiProperty({ description: '公告类型（1通知 2公告）' })
+  @ApiProperty({ description: '公告类型（1通知 2公告）',required:false })
   @IsOptional()
   noticeType: string | null;
-  @ApiProperty({ description: '公告状态（0关闭 1正常）' })
+  @ApiProperty({ description: '公告状态（0关闭 1正常）',required:false })
   @IsOptional()
   status: string | null;
 }
@@ -25,31 +25,31 @@ export class CreateSysNoticeDto extends BaseDomain {
   @IsNotEmpty({ message: '公告类型（1通知 2公告）不能为空' })
   @IsString()
   noticeType: string;
-  @ApiProperty({ description: '公告内容' })
+  @ApiProperty({ description: '公告内容',required:false })
   @IsOptional()
   @IsString()
   noticeContent?: string;
-  @ApiProperty({ description: '公告状态（0关闭 1正常）' })
+  @ApiProperty({ description: '公告状态（0关闭 1正常）',required:false })
   @IsOptional()
   @IsString()
   status?: string;
-  @ApiProperty({ description: '创建者' })
+  @ApiProperty({ description: '创建者',required:false })
   @IsOptional()
   @IsString()
   createBy?: string;
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: '创建时间',required:false })
   @IsOptional()
   @IsString()
   createTime?: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: '备注',required:false })
   @IsOptional()
   @IsString()
   remark?: string;
@@ -69,31 +69,31 @@ export class UpdateSysNoticeDto extends BaseDomain {
   @IsNotEmpty({ message: '公告类型（1通知 2公告）不能为空' })
   @IsString()
   noticeType: string;
-  @ApiProperty({ description: '公告内容' })
+  @ApiProperty({ description: '公告内容',required:false })
   @IsOptional()
   @IsString()
   noticeContent?: string;
-  @ApiProperty({ description: '公告状态（0关闭 1正常）' })
+  @ApiProperty({ description: '公告状态（0关闭 1正常）',required:false })
   @IsOptional()
   @IsString()
   status?: string;
-  @ApiProperty({ description: '创建者' })
+  @ApiProperty({ description: '创建者',required:false })
   @IsOptional()
   @IsString()
   createBy?: string;
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: '创建时间',required:false })
   @IsOptional()
   @IsString()
   createTime?: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: '备注',required:false })
   @IsOptional()
   @IsString()
   remark?: string;

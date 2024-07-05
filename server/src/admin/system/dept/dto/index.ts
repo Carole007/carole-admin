@@ -5,43 +5,43 @@ import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 import { queryDomain } from '@/common/domain/queryDomain';
 /**@description 查询部门管理Dto */
 export class QuerySysDeptDto extends queryDomain {
-  @ApiProperty({ description: '部门id' })
+  @ApiProperty({ description: '部门id',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   deptId: number | null;
-  @ApiProperty({ description: '父部门' })
+  @ApiProperty({ description: '父部门',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   parentId: number | null;
-  @ApiProperty({ description: '祖级列表' })
+  @ApiProperty({ description: '祖级列表',required:false })
   @IsOptional()
   ancestors: string | null;
-  @ApiProperty({ description: '部门名称' })
+  @ApiProperty({ description: '部门名称',required:false })
   @IsOptional()
   deptName: string | null;
-  @ApiProperty({ description: '显示顺序' })
+  @ApiProperty({ description: '显示顺序',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   orderNum: number | null;
-  @ApiProperty({ description: '负责人' })
+  @ApiProperty({ description: '负责人',required:false })
   @IsOptional()
   leader: string | null;
-  @ApiProperty({ description: '联系电话' })
+  @ApiProperty({ description: '联系电话',required:false })
   @IsOptional()
   phone: string | null;
-  @ApiProperty({ description: '邮箱' })
+  @ApiProperty({ description: '邮箱',required:false })
   @IsOptional()
   email: string | null;
-  @ApiProperty({ description: '部门状态（0停用,1正常）' })
+  @ApiProperty({ description: '部门状态（0停用,1正常）',required:false })
   @IsOptional()
   status: string | null;
-  @ApiProperty({ description: '创建者' })
+  @ApiProperty({ description: '创建者',required:false })
   @IsOptional()
   createBy: string | null;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   updateBy: string | null;
 }
@@ -52,7 +52,7 @@ export class CreateSysDeptDto extends BaseDomain {
   @Transform((v) => +v.value)
   @IsNumber()
   parentId: number;
-  @ApiProperty({ description: '祖级列表' })
+  @ApiProperty({ description: '祖级列表',required:false })
   @IsOptional()
   @IsString()
   ancestors?: string;
@@ -65,35 +65,35 @@ export class CreateSysDeptDto extends BaseDomain {
   @Transform((v) => +v.value)
   @IsNumber()
   orderNum: number;
-  @ApiProperty({ description: '负责人' })
+  @ApiProperty({ description: '负责人',required:false })
   @IsOptional()
   @IsString()
   leader?: string;
-  @ApiProperty({ description: '联系电话' })
+  @ApiProperty({ description: '联系电话',required:false })
   @IsOptional()
   @IsString()
   phone?: string;
-  @ApiProperty({ description: '邮箱' })
+  @ApiProperty({ description: '邮箱',required:false })
   @IsOptional()
   @IsString()
   email?: string;
-  @ApiProperty({ description: '部门状态（0停用,1正常）' })
+  @ApiProperty({ description: '部门状态（0停用,1正常）',required:false })
   @IsOptional()
   @IsString()
   status?: string;
-  @ApiProperty({ description: '创建者' })
+  @ApiProperty({ description: '创建者',required:false })
   @IsOptional()
   @IsString()
   createBy?: string;
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: '创建时间',required:false })
   @IsOptional()
   @IsString()
   createTime?: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;
@@ -105,7 +105,7 @@ export class UpdateSysDeptDto extends BaseDomain {
   @Transform((v) => +v.value)
   @IsNumber()
   deptId: number;
-  @ApiProperty({ description: '祖级列表' })
+  @ApiProperty({ description: '祖级列表',required:false })
   @IsOptional()
   @IsString()
   ancestors?: string;
@@ -118,35 +118,35 @@ export class UpdateSysDeptDto extends BaseDomain {
   @Transform((v) => +v.value)
   @IsNumber()
   orderNum: number;
-  @ApiProperty({ description: '负责人' })
+  @ApiProperty({ description: '负责人',required:false })
   @IsOptional()
   @IsString()
   leader?: string;
-  @ApiProperty({ description: '联系电话' })
+  @ApiProperty({ description: '联系电话',required:false })
   @IsOptional()
   @IsString()
   phone?: string;
-  @ApiProperty({ description: '邮箱' })
+  @ApiProperty({ description: '邮箱',required:false })
   @IsOptional()
   @IsString()
   email?: string;
-  @ApiProperty({ description: '部门状态（0停用,1正常）' })
+  @ApiProperty({ description: '部门状态（0停用,1正常）',required:false })
   @IsOptional()
   @IsString()
   status?: string;
-  @ApiProperty({ description: '创建者' })
+  @ApiProperty({ description: '创建者',required:false })
   @IsOptional()
   @IsString()
   createBy?: string;
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: '创建时间',required:false })
   @IsOptional()
   @IsString()
   createTime?: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;

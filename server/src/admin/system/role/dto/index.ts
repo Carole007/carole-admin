@@ -11,13 +11,13 @@ import {
 import { queryDomain } from '@/common/domain/queryDomain';
 /**@description 查询角色管理Dto */
 export class QuerySysRoleDto extends queryDomain {
-  @ApiProperty({ description: '角色名称' })
+  @ApiProperty({ description: '角色名称',required:false })
   @IsOptional()
   roleName: string | null;
-  @ApiProperty({ description: '角色权限字符串' })
+  @ApiProperty({ description: '角色权限字符串',required:false })
   @IsOptional()
   roleKey: string | null;
-  @ApiProperty({ description: '显示顺序' })
+  @ApiProperty({ description: '显示顺序',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
@@ -25,20 +25,20 @@ export class QuerySysRoleDto extends queryDomain {
   @ApiProperty({
     description:
       '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅个人权限）',
-  })
+ required:false })
   @IsOptional()
   dataScope: string | null;
-  @ApiProperty({ description: '菜单树选择项是否关联显示' })
+  @ApiProperty({ description: '菜单树选择项是否关联显示',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   menuCheckStrictly: number | null;
-  @ApiProperty({ description: '部门树选择项是否关联显示' })
+  @ApiProperty({ description: '部门树选择项是否关联显示',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   deptCheckStrictly: number | null;
-  @ApiProperty({ description: '角色状态（0停用 1正常）' })
+  @ApiProperty({ description: '角色状态（0停用 1正常）',required:false })
   @IsOptional()
   status: string | null;
 }
@@ -60,16 +60,16 @@ export class CreateSysRoleDto extends BaseDomain {
   @ApiProperty({
     description:
       '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
-  })
+ required:false })
   @IsOptional()
   @IsString()
   dataScope?: string;
-  @ApiProperty({ description: '菜单树选择项是否关联显示' })
+  @ApiProperty({ description: '菜单树选择项是否关联显示',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   menuCheckStrictly?: number;
-  @ApiProperty({ description: '部门树选择项是否关联显示' })
+  @ApiProperty({ description: '部门树选择项是否关联显示',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
@@ -78,23 +78,23 @@ export class CreateSysRoleDto extends BaseDomain {
   @IsNotEmpty({ message: '角色状态（0停用 1正常）不能为空' })
   @IsString()
   status: string;
-  @ApiProperty({ description: '创建者' })
+  @ApiProperty({ description: '创建者',required:false })
   @IsOptional()
   @IsString()
   createBy?: string;
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: '创建时间',required:false })
   @IsOptional()
   @IsString()
   createTime?: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: '备注',required:false })
   @IsOptional()
   @IsString()
   remark?: string;
@@ -125,16 +125,16 @@ export class UpdateSysRoleDto extends BaseDomain {
   @ApiProperty({
     description:
       '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
-  })
+ required:false })
   @IsOptional()
   @IsString()
   dataScope?: string;
-  @ApiProperty({ description: '菜单树选择项是否关联显示' })
+  @ApiProperty({ description: '菜单树选择项是否关联显示',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
   menuCheckStrictly?: number;
-  @ApiProperty({ description: '部门树选择项是否关联显示' })
+  @ApiProperty({ description: '部门树选择项是否关联显示',required:false })
   @IsOptional()
   @Transform((v) => +v.value)
   @IsNumber()
@@ -143,27 +143,27 @@ export class UpdateSysRoleDto extends BaseDomain {
   @IsNotEmpty({ message: '角色状态（0停用 1正常）不能为空' })
   @IsString()
   status: string;
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: '创建时间',required:false })
   @IsOptional()
   @IsString()
   createTime?: string;
-  @ApiProperty({ description: '更新者' })
+  @ApiProperty({ description: '更新者',required:false })
   @IsOptional()
   @IsString()
   updateBy?: string;
-  @ApiProperty({ description: '更新时间' })
+  @ApiProperty({ description: '更新时间',required:false })
   @IsOptional()
   @IsString()
   updateTime?: string;
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: '备注',required:false })
   @IsOptional()
   @IsString()
   remark?: string;
-  @ApiProperty({ description: '菜单权限' })
+  @ApiProperty({ description: '菜单权限',required:false })
   @IsOptional()
   @IsArray()
   menuIds: number[];
-  @ApiProperty({ description: '部门权限' })
+  @ApiProperty({ description: '部门权限',required:false })
   @IsOptional()
   @IsArray()
   deptIds: number[];

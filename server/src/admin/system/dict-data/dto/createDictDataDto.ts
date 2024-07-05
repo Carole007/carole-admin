@@ -16,10 +16,10 @@ export class CreateDictDataDto extends BaseDomain {
   @IsNotEmpty({ message: '数据键值不能为空' })
   @IsString()
   dictValue?: string;
-  @ApiProperty({ description: '样式属性' })
+  @ApiProperty({ description: '样式属性',required:false })
   @IsOptional()
   cssClass?: string;
-  @ApiProperty({ description: '回显样式' })
+  @ApiProperty({ description: '回显样式',required:false })
   @IsOptional()
   listClass?: string;
   @ApiProperty({ description: '显示排序' })
@@ -27,7 +27,7 @@ export class CreateDictDataDto extends BaseDomain {
   @Transform((v) => +v.value)
   @IsNumber()
   dictSort: number;
-  @ApiProperty({ description: '字典状态（0停用，1正常）' })
+  @ApiProperty({ description: '字典状态（0停用，1正常）',required:false })
   @IsOptional()
   status?: string = '1';
 }

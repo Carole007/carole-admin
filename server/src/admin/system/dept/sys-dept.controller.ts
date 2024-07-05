@@ -37,7 +37,6 @@ import { SysDept } from '@prismaClient';
 export class SysDeptController {
   constructor(private deptService: DeptService) {}
   @ApiOperation({ summary: '查询部门管理列表' })
-  @ApiQuery({ type: QuerySysDeptDto })
   @ApiResponse({ type: Result<SysDept[]> })
   @RequirePermission('system:dept:query')
   @Get('/list')
@@ -46,7 +45,6 @@ export class SysDeptController {
   }
 
   @ApiOperation({ summary: '查询部门列表（排除节点）' })
-  @ApiQuery({ type: QuerySysDeptDto })
   @ApiResponse({ type: Result<SysDept[]> })
   @RequirePermission('system:dept:query')
   @Get('list/exclude/:deptId')

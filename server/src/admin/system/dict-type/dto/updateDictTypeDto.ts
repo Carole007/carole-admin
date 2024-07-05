@@ -15,7 +15,7 @@ export class updateDictTypeDto extends BaseDomain {
   @IsNotEmpty({ message: '字典类型不能为空' })
   @IsString()
   dictType: string;
-  @ApiProperty({ description: '字典状态（0停用，1正常）' })
+  @ApiProperty({ description: '字典状态（0停用，1正常）',required:false })
   @IsOptional()
   status?: string = '1';
 }

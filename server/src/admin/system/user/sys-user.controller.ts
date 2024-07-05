@@ -73,7 +73,6 @@ export class SysUserController {
   }
 
   @ApiOperation({ summary: '查询用户管理列表' })
-  @ApiQuery({ type: QuerySysUserDto })
   @ApiResponse({ type: TableDataInfo<SysUser> })
   @RequirePermission('system:user:query')
   @Get('/list')
@@ -82,7 +81,6 @@ export class SysUserController {
   }
 
   @ApiOperation({ summary: '查询部门列表' })
-  @ApiQuery({ type: QuerySysDeptDto })
   @ApiResponse({ type: Result<SysDept[]> })
   @RequirePermission('system:dept:query')
   @Get('/deptTree')

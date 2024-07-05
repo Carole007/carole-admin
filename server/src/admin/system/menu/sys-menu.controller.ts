@@ -54,7 +54,6 @@ export class SysMenuController {
   }
 
   @ApiOperation({ summary: '查询菜单管理列表' })
-  @ApiQuery({ type: QuerySysMenuDto })
   @ApiResponse({ type: Result<SysMenu[]> })
   @RequirePermission('system:menu:query')
   @Get('/list')

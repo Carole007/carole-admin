@@ -38,7 +38,6 @@ import { TableDataInfo } from '@/common/domain/TableDataInfo';
 export class SysPostController {
   constructor(private postService: PostService) {}
   @ApiOperation({ summary: '查询岗位信息表列表' })
-  @ApiQuery({ type: QuerySysPostDto })
   @ApiResponse({ type: TableDataInfo<SysPost> })
   @RequirePermission('system:post:query')
   @Get('/list')

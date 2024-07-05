@@ -16,7 +16,6 @@ export class ${className}Controller {
     constructor(private ${businessName}Service: ${className}Service) { } 
 
     @ApiOperation({ summary: "查询${functionName}列表" })
-    @ApiQuery({type:Query${className}Dto})
     @ApiResponse({ type: TableDataInfo<${modelName1}> })
     @RequirePermission("${moduleName}:${businessName}:list")
     @Get("/list")
