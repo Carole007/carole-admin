@@ -498,6 +498,115 @@ async test3() {
 
 
 
+## 请求跳过登录验证
+
+修改：`server\src\app.module.ts`
+
+![image-20240705211039862](assets/image-20240705211039862.png)
+
+```typescript
+支持通配符
+.exclude('/test(.*)','/a') // 排除/test开头和/a的路由 
+.forRoutes('*') // 应用到所有路由
+.forRoutes('/admin(*)') //应用到所有/admin开头的路由 
+```
+
+
+
+## 使用redis
+
+文件：`server\src\common\utils\redisUtils.ts`
+
+封装了一个redis连接池，里面包含一些常用的方法，如果没有你想要的，可以自己加进去。
+
+![image-20240705213300262](assets/image-20240705213300262.png)
+
+使用：
+
+```typescript
+import { redisUtils } from '@/common/utils/redisUtils'; //导入
+
+//使用直接调用方法即可
+const r = await redisUtils.get('demo');
+await redisUtils.set("demo","hello world!",10); //过期时间秒为单位 10s过期
+...
+```
+
+
+
+## 请求参数验证
+
+> 前言： 
+>
+> 使用类定义参数的模型规则，请求时会对参数做校验，不通过直接返回错误，以及自动删除不在类中的字段，更加安全方便。
+>
+> 比如你有个用户修改的接口，但是只允许修改 nickname,和age,email 但是别人恶意传了个password，
+>
+> 你使用user=req.body()
+>
+> 代码是这样写的: prisma.user.update({where:{id},data:user}) 这样会导致别人把password也修改了，
+>
+> 当然你会这样写 :  cosnt {username,age,email} = user; prisma.user.update({where:{id},data:{nickname,age,email}}),这样写避免了上面的问题，但是如果你还要对参数做校验呢，比如nickname不能为空，age是否在1-150之内，email是否有效等等，将这些逻辑全写在controller中将会非常麻烦。
+>
+> 所以我们使用class-validator
+
+官方github： [class-validator](https://github.com/typestack/class-validator) ，可以看看有哪些方法，这里我就不列举了。
+
+使用时在类的字段上加需要的验证规则，如果不需要什么验证，请务必加上@IsOptional()注解，
+
+如果你需要的是一个number类型，但是传的参数可能是string，你可以使用@Transform处理值，((v) => +v.value)  注意v.value才是值
+
+@ApiProperty是swagger的注解，可不填写
+
+示例：
+
+dto类
+
+```typescript
+export class CreateDictDataDto extends BaseDomain {
+  @ApiProperty({ description: '字典类型' })
+  @IsNotEmpty({ message: '字典类型不能为空' })
+  @IsString()
+  dictType: string;
+  @ApiProperty({ description: '数据标签' })
+  @IsNotEmpty({ message: '数据标签不能为空' })
+  @IsString()
+  dictLabel: string;
+  @ApiProperty({ description: '数据键值' })
+  @IsNotEmpty({ message: '数据键值不能为空' })
+  @IsString()
+  dictValue?: string;
+  @ApiProperty({ description: '样式属性' })
+  @IsOptional()
+  cssClass?: string;
+  @ApiProperty({ description: '回显样式' })
+  @IsOptional()
+  listClass?: string;
+  @ApiProperty({ description: '显示排序' })
+  @IsNotEmpty({ message: '排序值不能为空' })
+  @Transform((v) => +v.value)
+  @IsNumber()
+  dictSort: number;
+  @ApiProperty({ description: '字典状态（0停用，1正常）' })
+  @IsOptional()
+  status?: string = '1';
+}
+```
+
+controller使用时,只需加上刚才定义的类，可以放心安全使用。
+
+![image-20240705214655897](assets/image-20240705214655897.png)
+
+### 注意
+
+在 `server\src\app.module.ts`里设置了whiteList:true,会自动删除不在dto类中的字段，
+
+所以如果你使用了类来修饰参数类型，某个参数不想要验证，请务必加上@IsOptional()注解，标识可选的，否则这个字段会被直接删除掉
+
+
+
+![image-20240705213938007](assets/image-20240705213938007.png)
+
 ## 发送邮件
 
 1. 修改.env里面的 邮箱连接账号密码，和服务器地址
@@ -528,6 +637,8 @@ location / {
   try_files $uri $uri/ /index.html;
 }
 ```
+
+
 
 
 
