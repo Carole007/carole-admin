@@ -510,12 +510,23 @@ async test3() {
 
 ```bash
 #后端
-cd server && npm run build
-# 把package.json移动到dist目录，上传dist目录到服务器，修改配置文件， 执行 npx prisma generate生成当前系统的prisma引擎，
+
+cd server
+# 建议在server/src/schema.prisma里的binaryTargets添加上自己的服务器平台，在本地执行 npx prisma generate生成目标平台的引擎，
+# 否则就把源代码上传上去，执行npx prisma generate && npm run build, 修改配置文件,运行dist/main.js 
+npm run build
+# 把package.json移动到dist目录，上传dist目录到服务器，修改配置文件，
+npm i 
 pm2 start main.js
+
 
 #前端
 npm run build:prod
+#上传dist目录到服务器
+# 添加nginx配置
+location / {
+  try_files $uri $uri/ /index.html;
+}
 ```
 
 
