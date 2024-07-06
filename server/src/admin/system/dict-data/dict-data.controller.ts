@@ -18,7 +18,7 @@ import { queryDictDataDto } from './dto/queryDictDataDto';
 import { SysDictDataService } from './service/sys-dict-data.service';
 import Result from '@/common/result/Result';
 import { CreateDictDataDto } from './dto/createDictDataDto';
-import { nowDate } from '@/common/utils';
+import { nowDateTime } from '@/common/utils';
 import { updateDictDataDto } from './dto/updateDictDataDto';
 import { Response } from 'express';
 
@@ -55,8 +55,8 @@ export class DictDataController {
   @ApiOperation({ summary: '新增字典数据' })
   @Post()
   async addData(@Body() dictData: CreateDictDataDto, @Req() req) {
-    dictData.createTime = nowDate();
-    dictData.updateTime = nowDate();
+    dictData.createTime = nowDateTime();
+    dictData.updateTime = nowDateTime();
     dictData.createBy = req.user.userName;
     dictData.updateBy = req.user.userName;
     await this.dictDataService.addDictData(dictData);
@@ -66,7 +66,7 @@ export class DictDataController {
   @ApiOperation({ summary: '修改字典数据' })
   @Put()
   async updateData(@Body() dictData: updateDictDataDto, @Req() req) {
-    dictData.updateTime = nowDate();
+    dictData.updateTime = nowDateTime();
     dictData.updateBy = req.user.userName;
     await this.dictDataService.updateDictData(dictData);
     return Result.ok('修改成功！');

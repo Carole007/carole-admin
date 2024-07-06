@@ -110,7 +110,7 @@ export class GenService {
       delete v.edit;
       delete v.list;
       delete v.query;
-      v.updateTime = nowDate();
+      v.updateTime = nowDateTime();
       v.updateBy = 'admin';
       return v;
     });
