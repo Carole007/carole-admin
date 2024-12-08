@@ -141,8 +141,8 @@ export class UserService {
   }
   /**@description 新增用户 */
   async addUser(sysUser: CreateSysUserDto) {
-    const { roleIds, postIds, ...user } = sysUser;
     sysUser.password = this.authService.encrypt(sysUser.password);
+    const { roleIds, postIds, ...user } = sysUser;
     //删除掉空值
     for (const key in sysUser) {
       !isNotEmpty(sysUser[key]) && delete sysUser[key];
