@@ -4,17 +4,46 @@ import * as assert from 'assert';
 import Mail from 'nodemailer/lib/mailer';
 import { isEmail } from 'class-validator';
 let transporter: Transporter;
+//邮件并发数量
+const maxConcurrentTasks = 10;
+let runningTasks: Promise<any>[] = [];
+const emailQueue: (() => Promise<any>)[] = [];
+// 添加邮件任务到队列
+function addEmailTaskToQueue(task: () => Promise<any>) {
+  emailQueue.push(task);
+  processQueue(); // 尝试处理队列
+}
+// 处理邮件任务队列
+function processQueue() {
+  if (runningTasks.length >= maxConcurrentTasks || emailQueue.length === 0) {
+    return; // 并发数已达上限，或无任务
+  }
+  // 从队列取一个任务
+  const nextTask = emailQueue.shift();
+  if (nextTask) {
+    const taskPromise = nextTask()
+      .catch(error => console.error(error))
+      .finally(() => {
+        // 移除已完成的任务
+        runningTasks = runningTasks.filter(task => task !== taskPromise);
+        processQueue(); // 继续处理下一个任务
+      });
+
+    runningTasks.push(taskPromise);
+  }
+}
+
 if (Config.mail.enable) {
   transporter = createTransport(Config.mail.config);
   checkConnect();
 }
-
 // 测试发件
 /* async function test() {
   await sendCode("2282169525@qq.com", "12323")
   console.log("发送成功")
 }
-test() */
+test()
+*/
 
 /**
  * @desc 检查邮箱服务器是否能正常连接！
@@ -31,31 +60,33 @@ function checkConnect() {
  */
 export async function sendMail(options: Mail.Options & { to: string }) {
   return new Promise(async (resolve, reject) => {
-    const t = setTimeout(() => {
-      reject('邮件发送失败:超时！');
-    }, Config.mail.timeout);
-    assert(
-      options.to.split(',').every((v) => isEmail(v)),
-      '邮箱格式不正确！',
-    );
-    options = {
-      subject: '我是一封神奇的邮箱！',
-      from: Config.mail.config.auth.user,
-      text: '测试！！！',
-      // to: '',//发送到多个用户中间用,连接
-      // text: 'test',//发送文本
-      // html: '<h1>Hello,world!</h1>', //可以发送html
-      ...options,
-    };
-    try {
-      const res = await transporter.sendMail(options);
-      return resolve('邮件发送成功~ ：' + res.accepted.toString());
-    } catch (err) {
-      console.log('邮件发送失败！', err);
-      return reject('邮件发送失败！');
-    } finally {
-      clearTimeout(t);
-    }
+    addEmailTaskToQueue(async () => { 
+      const t = setTimeout(() => {
+        reject('邮件发送失败:超时！');
+      }, Config.mail.timeout);
+      assert(
+        options.to.split(',').every((v) => isEmail(v)),
+        '邮箱格式不正确！',
+      );
+      options = {
+        subject: '我是一封神奇的邮箱！',
+        from: Config.mail.config.auth.user,
+        text: '测试！！！',
+        // to: '',//发送到多个用户中间用,连接
+        // text: 'test',//发送文本
+        // html: '<h1>Hello,world!</h1>', //可以发送html
+        ...options,
+      };
+      try {
+        const res = await transporter.sendMail(options);
+        return resolve('邮件发送成功~ ：' + res.accepted.toString());
+      } catch (err) {
+        console.log('邮件发送失败！', err);
+        return reject('邮件发送失败！');
+      } finally {
+        clearTimeout(t);
+      }
+    })
   });
 }
 
