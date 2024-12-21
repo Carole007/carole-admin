@@ -22,7 +22,7 @@
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
       <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable style="width:150px">
           <el-option
             v-for="dict in ${dictType}"
             :key="dict.value"
@@ -33,7 +33,7 @@
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
       <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable>
+        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable style="width:150px">
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
@@ -200,7 +200,7 @@
         </el-form-item>
 #elseif($column.htmlType == "select" && "" != $dictType)
         <el-form-item label="${comment}" prop="${field}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
+          <el-select v-model="form.${field}" placeholder="请选择${comment}" style="width:150px">
             <el-option
               v-for="dict in ${dictType}"
               :key="dict.value"
@@ -215,7 +215,7 @@
         </el-form-item>
 #elseif($column.htmlType == "select" && $dictType)
         <el-form-item label="${comment}" prop="${field}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
+          <el-select v-model="form.${field}" placeholder="请选择${comment}" style="width:150px">
             <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
