@@ -138,7 +138,7 @@
       <FileList :fileList="scope.row.${javaField}" />
     </template>
   </el-table-column>
-#elseif($column.list && "" != $column.dictType)
+#elseif($column.list && "" != $column.dictType && null != $column.dictType)
       <el-table-column label="${comment}" align="center" prop="${javaField}">
         <template #default="scope">
 #if($column.htmlType == "checkbox")
