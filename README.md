@@ -629,8 +629,6 @@ location / {
 
 ## 联系方式
 
-微信: `luotianyi_y`
-
 qq交流群：[952834924](https://qm.qq.com/q/CspBa2r6h2)
 
 <img src="assets/qun.jpg" alt="qun" style="width:25%;" />
