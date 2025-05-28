@@ -2,10 +2,10 @@ import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { config } from './common/types/config';
 import { Constants } from './common/constant/Constants';
-dotenv.config({ path: join(__dirname, '.env') });
+dotenv.config({ path: join(__dirname, '../.env') });
 export const Config: config = {
   //服务器的HTTP端口，默认为3000
-  port: 3000,
+  port: Number.parseInt(process.env.APP_PORT) ?? 3000,
   //# 应用的访问路径前缀
   contextPath: '/v1',
   swagger: {
@@ -120,6 +120,6 @@ export const Config: config = {
 import { redisUtils } from './common/utils/redisUtils';
 
 //获取系统参数配置
-export async function getSysConfig(key: string): Promise<string|null>  { 
+export async function getSysConfig(key: string): Promise<string | null> {
   return redisUtils.get(Constants.SYS_CONFIG_KEY + key);
 }
