@@ -617,18 +617,3 @@ location / {
 ## v1.0.0
 
 - 系统发布    -2024-06-11
-
-# Footer
-
-## 贡献
-
-欢迎大家一起参与:
-
-- 提交 [issues](https://github.com/Carole007/carole-admin/issues) 来报告问题和优化建议.
-- 主动 [pull requests](https://github.com/Carole007/carole-admin/pulls) 来优化代码.
-
-## 联系方式
-
-qq交流群：[952834924](https://qm.qq.com/q/CspBa2r6h2)
-
-<img src="assets/qun.jpg" alt="qun" style="width:25%;" />
