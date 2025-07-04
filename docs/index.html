@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Carole-Admin - 基于 Nestjs+Vue 的后台框架</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Carole-Admin 是一款基于 Nestjs+Vue 前后端分离的后台框架，提供完整的权限管理、代码生成等功能">
+  <meta name="keywords" content="Carole-Admin,Nestjs,Nest-Admin,Vue,后台框架,前后端分离">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs/themes/prism.css">
+  <link rel="icon" href="assets/favicon.ico">
+  <div id="app"></div>
+  <style>
+    :root {
+      --theme-color: #4153af;
+    }
+    .markdown-section code {
+      color: var(--theme-color);
+    }
+    .app-name-link img {
+      max-width: 80px;
+    }
+    .sidebar-nav > ul > li > a {
+      font-weight: bold;
+    }
+    .content {
+      padding-top: 10px;
+    }
+    .markdown-section {
+      max-width: 900px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">加载中...</div>
+  <script>
+    window.$docsify = {
+      name: 'Carole-Admin',
+      themeColor: '#4153af',
+      repo: 'https://github.com/Carole007/carole-admin',
+      nameLink: 'https://github.com/Carole007/carole-admin',
+      executeScript: true,
+      loadSidebar: true,
+      loadNavbar: true,
+      coverpage: true,
+      auto2top: true,
+      subMaxLevel: 3,
+      pagination: {
+        previousText: '上一页',
+        nextText: '下一页',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      search: {
+        placeholder: '搜索',
+        noData: '找不到结果！',
+        depth: 3,     
+        paths: 'auto', 
+        hideOtherSidebarContent: true
+      },
+      count: {
+        countable: true,
+        position: 'top',
+        margin: '10px',
+        float: 'right',
+        fontsize: '0.9em',
+        color: 'rgb(90,90,90)',
+        language: 'chinese',
+        localization: {
+          words: "",
+          minute: ""
+        },
+        isExpected: true
+      },
+      plugins: [
+        function(hook, vm) {
+          hook.beforeEach(function(html) {
+            var url = 'https://github.com/Carole007/carole-admin/blob/main/docs/' + vm.route.file;
+            var editHtml = '[📝 编辑文档](' + url + ')\n';
+            return html + '\n\n----\n\n' + editHtml;
+          });
+        }
+      ]
+    }
+  </script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-typescript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-sql.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-nginx.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-tabs/dist/docsify-tabs.min.js"></script>
+
+</body>
+
+</html>
