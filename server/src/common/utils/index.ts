@@ -106,3 +106,7 @@ export async function exportTable(data: any[][], res: Response) {
   // 将 Excel 文件的二进制流数据返回给客户端
   res.end(buffer, 'binary');
 }
+//读取json文件，自动解析为js对象
+export function readJsonFile(path: string) {
+  return JSON.parse(fs.readFileSync(path).toString() || null)
+}
