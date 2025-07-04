@@ -33,6 +33,7 @@ import '@/common/utils/email';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './schedule';
 import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
+import Result from './common/result/Result';
 @Module({
   imports: [
     AdminModule,
@@ -48,9 +49,9 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
       storage:
         Config.rateLimit.storage === 'redis'
           ? new ThrottlerStorageRedisService({
-              ...Config.redis,
-              disconnectTimeout: 60 * 5 * 1000,
-            })
+            ...Config.redis,
+            disconnectTimeout: 60 * 5 * 1000,
+          })
           : null,
     }),
     ScheduleModule.forRoot(),
@@ -137,8 +138,20 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    const demo:any = (req, res, next) => {
+      if (Config.is_demo && req.method !== "GET") {
+        return res.send(Result.Error("演示模式，不允许操作"));
+      }
+      else {
+        next();
+      }
+    };
+    const middlewares = [AuthMiddleware]
+    if (Config.is_demo) { 
+      middlewares.push(demo);
+    }
     consumer
-      .apply(AuthMiddleware)
+      .apply(...middlewares)
       .exclude('/login', '/logout', '/captchaImage')
       .forRoutes('*');
   }

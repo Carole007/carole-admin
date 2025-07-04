@@ -11,6 +11,12 @@ const config_file_path = join(__dirname, `config-${runMode}.json`)
 可直接修改对应的json文件  config-${runMode}.json  或者删除json文件中对应的key，默认就使用下面的配置。
 后台提供了默认的配置文件修改，Config也会自动加载修改后的配置。 */
 export const Config = {
+  // 是否是演示模式
+  is_demo:false,
+  // 是否由后端托管前端文件
+  is_managed_by_backend: false,
+  //托管文件所在的目录路径
+  backend_directory: join(__dirname,"./front/"),
   //服务器的HTTP端口，默认为3000
   port: 3000,
   //# 应用的访问路径前缀
@@ -48,11 +54,11 @@ export const Config = {
   },
   crypto: {
     //密码加密秘钥
-    psdSecret:  'carole123456',
+    psdSecret: 'carole123456',
   },
   token: {
     // token加密秘钥
-    secret:  'carole123456',
+    secret: 'carole123456',
     //过期时间秒
     expiresIn: 60 * 60 * 24,
   },
