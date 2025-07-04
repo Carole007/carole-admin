@@ -39,7 +39,7 @@ if (Config.mail.enable) {
 }
 // 测试发件
 /* async function test() {
-  await sendCode("2282169525@qq.com", "12323")
+  await sendCode("bobbi6837@gmail.com", "12323")
   console.log("发送成功")
 }
 test()
@@ -213,7 +213,7 @@ export async function sendCode(email: string, code: string | number) {
       width: 100%;
       text-align: center;
     ">
-      <p>© 2020-${new Date().getFullYear()} midm.top
+      <p>© 2020-${new Date().getFullYear()} carole.top
       </p>
     </div>
   </div>
