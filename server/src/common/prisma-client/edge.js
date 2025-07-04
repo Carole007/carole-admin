@@ -356,7 +356,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\project\\carole-admin\\server\\src\\common\\prisma-client",
+      "value": "/Users/carole/project/carole-admin/server/src/common/prisma-client",
       "fromEnvVar": null
     },
     "config": {
@@ -365,7 +365,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin",
         "native": true
       }
     ],
@@ -388,7 +388,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
-  "postinstall": false,
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {

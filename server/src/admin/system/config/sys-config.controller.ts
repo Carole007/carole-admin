@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Post,
@@ -22,7 +23,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { RequirePermission } from '@/common/decorator/require-premission.decorator';
-import { nowDateTime } from '@/common/utils';
+import { nowDateTime, readJsonFile } from '@/common/utils';
 import { ConfigService } from './service/sys-config.service';
 import {
   QuerySysConfigDto,
@@ -32,11 +33,56 @@ import {
 import { Response } from 'express';
 import { SysConfig } from '@prismaClient';
 import { TableDataInfo } from '@/common/domain/TableDataInfo';
+import { RequireRole } from '@/common/decorator/require-role.decorator';
+import { join } from 'path';
+import { writeFileSync } from 'fs';
+import { Config } from '@/config';
 @ApiTags('参数配置')
 @ApiBearerAuth()
 @Controller('system/config')
 export class SysConfigController {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) { }
+  @ApiOperation({ summary: '获取配置文件列表' })
+  @Get("/getFileKeys")
+  @RequirePermission("system:serverconfig:menu")
+  getConfigFileKeys() {
+    let map = structuredClone(Config.ConfigFileMap)
+    for (let key in map) {
+      delete map[key].filePath
+    }
+    return Result.ok(map);
+  }
+  @ApiOperation({ summary: '根据key获取配置信息' })
+  @Get("/getConfigInfo")
+ @RequirePermission("system:serverconfig:menu")
+  getConfigInfo(@Query("key") key: string) {
+    if (key && Config.ConfigFileMap[key]) {
+      return Result.ok(readJsonFile(Config.ConfigFileMap[key].filePath))
+    } else {
+    }
+  }
+  @ApiOperation({ summary: '更新配置信息' })
+  @Post("serverConfig")
+  @RequirePermission("system:serverconfig:menu")
+  changeServerConfig(@Body() data, @Query("key") key: string) {
+    if (key in Config.ConfigFileMap) {
+      if (typeof data != "string") {
+        data = JSON.stringify(data, null, 2)
+      }
+      try {
+        JSON.parse(data);
+      } catch (error) {
+        Logger.error("修改配置文件异常：", error?.message);
+        return Result.Error("json格式有误！");
+      }
+      writeFileSync(Config.ConfigFileMap[key].filePath, data);
+      Logger.log("修改配置文件成功：", key);
+      return Result.ok("修改成功！");
+    } else {
+      return Result.Error("key不存在！");
+    }
+
+  }
   @ApiOperation({ summary: '查询参数配置列表' })
   @ApiResponse({ type: TableDataInfo<SysConfig> })
   @RequirePermission('system:config:query')

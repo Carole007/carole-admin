@@ -27,8 +27,6 @@
         <p>
           <el-button type="primary" plain @click="goTarget('https://github.com/Carole007/carole-admin')"> <svg-icon
               icon-class="github" />github</el-button>
-          <el-button type="primary" icon="Cloudy" plain
-            @click="goTarget('https://gitee.com/Carole007/carole-admin')">gitee</el-button>
         </p>
       </el-col>
 
@@ -77,33 +75,10 @@
           </template>
           <div class="body">
             <p>
-              <i class="el-icon-user-solid"></i> QQ群：<el-link type="primary" href="https://qm.qq.com/q/CspBa2r6h2"
-                target="_blank">952834924</el-link>
-              <img src="@/assets/images/qun.jpg" style="width: 80%;object-fit:cover" alt="qun" />
-            </p>
-            <p>
-              <i class="el-icon-chat-dot-round"></i> 微信：<a href="javascript:;">/ luotianyi_y</a>
-            </p>
-            <p>
-              <i class="el-icon-money"></i> qq：<a href="javascript:;" class="qq信息">/ 2282169525</a>
+              <i class="el-icon-user-solid"></i> 邮箱：<el-link type="primary" href="mailto:bobbi6837@gmail.com"
+                target="_blank">bobbi6837@gmail.com</el-link>
             </p>
           </div>
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="8">
-        <el-card class="update-log">
-          <template v-slot:header>
-            <div class="clearfix">
-              <span>更新日志</span>
-            </div>
-          </template>
-          <el-collapse accordion>
-            <el-collapse-item title="v1.0.0 - 2024-06-11">
-              <ol>
-                <li>carole-admin系统发布</li>
-              </ol>
-            </el-collapse-item>
-          </el-collapse>
         </el-card>
       </el-col>
     </el-row>

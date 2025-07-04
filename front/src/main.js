@@ -45,8 +45,14 @@ import TreeSelect from '@/components/TreeSelect'
 import DictTag from '@/components/DictTag'
 //文件列表显示组件
 import FileList from "@/components/FileList"
+//文件编辑
+import { install as VueMonacoEditorPlugin } from '@guolao/vue-monaco-editor'
 const app = createApp(App)
-
+app.use(VueMonacoEditorPlugin, {
+  paths: {
+     vs: 'https://unpkg.com/monaco-editor@0.43.0/min/vs'
+  },
+})
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
 app.config.globalProperties.download = download
@@ -67,6 +73,7 @@ app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 app.component('Editor', Editor)
 app.component('FileList', FileList)
+
 
 app.use(router)
 app.use(store)

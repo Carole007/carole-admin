@@ -58,3 +58,32 @@ export function refreshCache() {
     method: 'delete'
   })
 }
+
+
+
+/** 获取所有 Filekey 列表 */
+export function getKeys() {
+  return request({
+    url: '/system/config/getFileKeys',
+    method: 'get',
+  })
+}
+
+/** 根据 key 获取文件数据 */
+export function getInfoByKey(key) {
+  return request({
+    url: '/system/config/getConfigInfo',
+    method: 'get',
+    params: { key }
+  })
+}
+
+/** 根据 key 修改文件数据 */
+export function updateInfoByKey(key, data) {
+  return request({
+    url: '/system/config/serverConfig',
+    method: 'post',
+    params: { key },
+    data
+  })
+}

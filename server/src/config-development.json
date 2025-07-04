@@ -1,0 +1,52 @@
+{
+  "port": 3000,
+  "contextPath": "/v1",
+  "swagger": { "enable": true, "prefix": "/api" },
+  "captcha": { "mode": "math", "expiresIn": 120 },
+  "rateLimit": { "storage": "redis", "ttl": 120000, "limit": 60 },
+  "crypto": { "psdSecret": "carole123456" },
+  "token": { "secret": "carole123456", "expiresIn": 86400 },
+  "prisma": { "logEnable": false, "log": ["query", "info", "warn", "error"] },
+  "redis": { "host": "127.0.0.1", "port": 6379, "db": 5, "password": "" },
+  "upload": {
+    "path": "/Users/carole/carole-admin/upload",
+    "config": {
+      "img": {
+        "fileSize": 2097152,
+        "files": 1,
+        "fieldSize": 524288,
+        "fields": 100,
+        "fieldNameSize": 100,
+        "parts": 100,
+        "headerPairs": 100
+      },
+      "file": {
+        "fileSize": 104857600,
+        "files": 10,
+        "fieldSize": 524288,
+        "fields": 100,
+        "fieldNameSize": 100,
+        "parts": 100,
+        "headerPairs": 100
+      }
+    }
+  },
+  "gen": {
+    "author": "carole",
+    "packageName": "admin",
+    "moduleName": "system",
+    "autoRemovePre": false,
+    "tablePrefix": ["sys_"]
+  },
+  "mail": {
+    "enable": false,
+    "timeout": 30000,
+    "config": {
+      "host": null,
+      "port": 465,
+      "auth": { "user": null, "pass": null },
+      "secure": true,
+      "tls": { "rejectUnauthorized": false }
+    }
+  }
+}

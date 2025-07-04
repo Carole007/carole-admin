@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.1",
+    "@guolao/vue-monaco-editor": "^1.5.5",
     "@vueup/vue-quill": "1.2.0",
     "@vueuse/core": "10.6.1",
     "axios": "0.27.2",
