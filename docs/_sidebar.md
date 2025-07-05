@@ -1,4 +1,4 @@
-* [首页](readme.md)
+* [首页](README.md)
 * [安装指南](install.md)
 * [配置说明](config.md)
 * [开发指南](guide.md)
