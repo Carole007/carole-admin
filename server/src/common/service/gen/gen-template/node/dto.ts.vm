@@ -17,6 +17,16 @@ export class Query${className}Dto extends queryDomain {
       ${column.javaField}: ${type} | null
     #end
   #end
+
+  @ApiProperty({description:"排序列", required:false})
+  @IsOptional()
+  @IsString()
+  orderByColumn?: string
+
+  @ApiProperty({description:"排序方向(desc/asc)", required:false})
+  @IsOptional()
+  @IsString()
+  isAsc?: string
 }
 
 /**@description 创建${functionName}Dto */

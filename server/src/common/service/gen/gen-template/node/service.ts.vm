@@ -77,11 +77,22 @@ export class ${className}Service {
       #end
     #end
     #end
+
+    // 构建排序条件
+    let orderBy = {};
+    if (isNotEmpty(q.orderByColumn)) {
+      orderBy[q.orderByColumn] = q.isAsc?.toLowerCase() === 'ascending' ? 'asc' : 'desc';
+    } else {
+      // 默认排序，通常按创建时间或ID降序
+      orderBy = { ${pkName}: 'desc' };
+    }
+
     return {
       rows: await ${service}.findMany({
         skip: (q.pageNum - 1) * q.pageSize,
         take: q.pageSize,
         where: queryCondition,
+        orderBy: orderBy,
       }),
       total: await ${service}.count({
         where: queryCondition
