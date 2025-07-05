@@ -200,4 +200,9 @@ export function isProduction() {
 
 ## 后台修改配置
 
+> 注意：开发模式修改的是dist下的文件
+>
+> 修改后会同步更新Conifg
+>
+
 ![alt text](assets/config-edit.png)

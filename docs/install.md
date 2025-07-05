@@ -28,20 +28,17 @@ cd carole-admin
 
 ## 数据库配置
 
-1. 创建一个名为 `carole` 的数据库
-2. 导入项目根目录下的 SQL 文件
+1. 创建一个名为 `carole` 的数据库 （可自定义数据库名称）
 
-```sql
-CREATE DATABASE IF NOT EXISTS carole DEFAULT CHARACTER SET utf8mb4;
-USE carole;
--- 导入项目根目录下的 SQL 文件
-```
+> 记得修改 `server/src/.env` 文件中的 `DATABASE_URL` 变量配置
+
+2. 导入项目根目录下的 SQL 文件
 
 ## 快速启动
 
 ### 后端配置
 
-```bash
+```typescript
 # 进入后端目录
 cd server
 
@@ -53,6 +50,16 @@ npx prisma generate
 
 # 配置环境变量
 # 编辑 server/src/.env 文件，配置数据库连接信息
+DATABASE_URL="mysql://root:root@localhost:3306/carole" #url格式  mysql://用户名:密码@ip:端口/数据库?参数charset=utf8mb4
+
+# 修改相关配置
+server/src/config-development.json
+//redis连接信息
+"redis": { "host": "127.0.0.1", "port": 6379, "db": 5, "password": "" },
+//文件上传路径
+"upload": {
+    "path": "/Users/carole/carole-admin/upload",
+  }
 ```
 
 ### 前端配置
@@ -96,5 +103,5 @@ npm run dev
 关于更详细的配置说明，请参考：
 
 - [配置说明](config.md) - 系统配置文件详解
-- [开发指南](guide.md) - 包含权限控制、Prisma使用、代码生成等详细说明
+- [开发指南](guide.md) - 包含权限控制、Prisma 使用、代码生成等详细说明
 - [常见问题](faq.md) - 常见问题解答

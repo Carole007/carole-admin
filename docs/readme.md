@@ -19,7 +19,7 @@
 
 ## 项目
 
-> 演示地址：[https://carole.top](https://carole.top)
+> 演示地址：[https://carole-admin-demo.carole.top](https://carole-admin-demo.carole.top)
 >
 > 默认有两个用户： admin的密码为carole test的密码为123456
 >

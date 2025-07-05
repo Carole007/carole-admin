@@ -98,7 +98,7 @@ BigInt.prototype.toJSON = function () {
 
 代码生成器是 Carole-Admin 的核心功能之一，可以大幅提高开发效率。
 
-详细教程：[https://juejin.cn/post/7385743189636808719](https://juejin.cn/post/7385743189636808719)
+详细教程：[代码生成器使用教程](code_gen.md)
 
 ### 使用步骤
 
@@ -388,6 +388,10 @@ Carole-Admin 提供了邮件发送功能，可用于系统通知、密码重置�
 本节介绍如何将 Carole-Admin 系统部署到生产环境。
 
 ### 后端部署
+
+> 建议在config-production.json中 关闭 swagger 文档 `"swagger": { "enable": false }`
+>
+> 后台管理中修改用户密码，删除默认测试账号
 
 1. 准备 Prisma 引擎：
 

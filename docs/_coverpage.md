@@ -8,5 +8,5 @@
 - 📱 响应式设计，支持多终端访问
 
 [GitHub](https://github.com/Carole007/carole-admin)
-[演示站点](https://carole.top)
+[演示站点](https://carole-admin-demo.carole.top)
 [开始使用](#介绍)
