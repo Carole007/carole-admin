@@ -323,6 +323,8 @@ const defaultSort = ref({ prop: "${pkName}", order: "descending" });
 const data = reactive({
   form: {},
   queryParams: {
+    orderByColumn: defaultSort.value.prop,
+    isAsc: defaultSort.value.order,
     pageNum: 1,
     pageSize: 10,
     #foreach ($column in $columns)
