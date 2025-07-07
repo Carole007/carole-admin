@@ -13,29 +13,33 @@ class CacheTool {
     this.cache = new Map()
   }
 
-   /**
-   * 
-   * @param key 缓存的键
-   * @param value 缓存的value
-   * @param initFunction 初始值和刷新值的函数
-   * @param expirationTime 过期时间，毫秒
-   * @param isRefresh  过期是否自动刷新
-   */
+  /**
+  * 
+  * @param key 缓存的键
+  * @param value 缓存的value
+  * @param initFunction 初始值和刷新值的函数
+  * @param expirationTime 过期时间，毫秒
+  * @param isRefresh  过期是否自动刷新
+  */
   set(key: string, value: any, initFunction?: Function, expirationTime: number = Infinity, isRefresh: boolean = true) {
     return this.init(key, value, initFunction, expirationTime, isRefresh)
   }
 
-  async get(key: string) {
+ async get(key: string) {
     const item = this.cache.get(key);
+    if (!item) return null;
+    // 检查是否过期
     if (!this.isExpire(key)) {
       return item.value;
-    } else if (item && item.initFunction) {
+    }
+    // 处理过期数据
+    if (item.initFunction) {
       if (item.isRefresh) {
         return this.refresh(key);
-      } else {
-        this.cache.delete(key)
       }
     }
+    // 删除过期数据
+    this.cache.delete(key);
     return null;
   }
   /**
@@ -71,34 +75,34 @@ class CacheTool {
     const item = this.cache.get(key);
     try {
       if (!item || !item.isRefresh) return null
-    if (value) {
-      this.init(key, value, item.initFunction, item.expirationTime);
-      return value;
-    } else if (item.initFunction) {
-      const refreshedValue = await Promise.resolve(item.initFunction());
-      if (refreshedValue !== undefined) {
-        this.init(key, refreshedValue,item.initFunction, item.expirationTime);
-        return refreshedValue;
+      if (value) {
+        this.init(key, value, item.initFunction, item.expirationTime);
+        return value;
+      } else if (item.initFunction) {
+        const refreshedValue = await Promise.resolve(item.initFunction());
+        if (refreshedValue !== undefined) {
+          this.init(key, refreshedValue, item.initFunction, item.expirationTime);
+          return refreshedValue;
+        }
       }
-    }
     } catch (error) {
       Logger.error(error);
-      return; 
+      return;
     }
   }
   delete(key: string) {
     return this.cache.delete(key)
   }
-  keys() { 
+  keys() {
     return this.cache.keys()
   }
-  values() { 
+  values() {
     return this.cache.values()
   }
-  size() { 
+  size() {
     return this.cache.size
   }
-  isExpire(key:string) { 
+  isExpire(key: string) {
     let item = this.cache.get(key)
     return !item || Date.now() > item.expiration
   }
