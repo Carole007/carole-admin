@@ -40,9 +40,16 @@ class RedisUtils {
     }
   }
 
-  async set(key: string, value: string, expire?: number): Promise<string> {
+  async set(
+    key: string,
+    value: string,
+    expire?: number,
+    mode?: 'NX' | 'XX'
+  ): Promise<string | null> {
     return this.useClient(async (client) => {
-      if (expire) {
+      if (expire && mode) {
+        return (client as any).set(key, value, 'EX', expire, mode);
+      } else if (expire) {
         return await client.set(key, value, 'EX', expire);
       } else {
         return await client.set(key, value);
@@ -189,4 +196,30 @@ function parseCommandStats(commandStats) {
     }
   });
   return result;
+}
+
+/**
+ * 分布式锁执行器
+ * @param key 锁的唯一标识
+ * @param action 要执行的业务函数（异步）
+ * @param expire 锁的自动释放时间（秒），防止业务崩溃导致死锁，默认 30 秒
+ */
+export async function runWithLock<T>(key: string, action: () => Promise<T>, expire = 30): Promise<T> {
+  const lockKey = `lock:${key}`;
+
+  // 1. 尝试加锁 (SET NX EX)
+  const lock = await redisUtils.set(lockKey, "1", expire, 'NX');
+
+  if (!lock) {
+    // 抢锁失败，说明相同业务正在处理中
+    throw new Error('请求处理中，请稍后再试');
+  }
+
+  try {
+    // 2. 抢锁成功，执行传入的业务函数
+    return await action();
+  } finally {
+    // 3. 无论成功还是失败，执行完一定要释放锁
+    await redisUtils.del(lockKey);
+  }
 }
