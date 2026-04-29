@@ -211,7 +211,7 @@
               v-for="dict in ${dictType}"
               :key="dict.value"
               :label="dict.label"
-#if($column.javaType == "Integer" || $column.javaType == "Long")
+#if($column.javaType == "Integer" || $column.javaType == "Number" || $column.javaType == "Long")
               :value="parseInt(dict.value)"
 #else
               :value="dict.value"
@@ -231,7 +231,12 @@
             <el-checkbox
               v-for="dict in ${dictType}"
               :key="dict.value"
-              :label="dict.value">
+#if($column.javaType == "Integer" || $column.javaType == "Number" || $column.javaType == "Long")
+              :label="parseInt(dict.value)"
+#else
+              :label="dict.value"
+#end
+              >
               {{dict.label}}
             </el-checkbox>
           </el-checkbox-group>
@@ -248,7 +253,7 @@
             <el-radio
               v-for="dict in ${dictType}"
               :key="dict.value"
-#if($column.javaType == "Integer" || $column.javaType == "Long")
+#if($column.javaType == "Integer" || $column.javaType == "Number" || $column.javaType == "Long")
               :label="parseInt(dict.value)"
 #else
               :label="dict.value"
