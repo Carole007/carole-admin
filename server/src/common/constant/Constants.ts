@@ -58,6 +58,11 @@ export class Constants {
   public static readonly LOGIN_TOKEN_KEY: string = 'login_tokens:';
 
   /**
+   * 用户所有 Token 集合 redis key（Set 结构，用于快速吊销）
+   */
+  public static readonly USER_TOKENS_KEY: string = 'user_tokens:';
+
+  /**
    * 缓存用户信息 redis key
    */
   public static readonly LOGIN_CACHE_TOKEN_KEY: string = 'login_cache_tokens:';

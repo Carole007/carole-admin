@@ -167,8 +167,8 @@ export class SysUserController {
   @Put('/profile/updatePwd')
   async updateUserPwd(
     @Req() req,
-    @Query('oldPassword') oldPassword: string,
-    @Query('newPassword') newPassword: string,
+    @Body('oldPassword') oldPassword: string,
+    @Body('newPassword') newPassword: string,
   ): Promise<Result<null>> {
     await this.userService.updateUserPwd(req.userId, oldPassword, newPassword);
     return Result.ok();

@@ -16,8 +16,7 @@ import * as assert from 'assert';
 import { AuthService } from '@/common/service/auth/auth.service';
 import { isArray } from 'lodash';
 import Result from '@/common/result/Result';
-import { redisUtils } from '@/common/utils/redisUtils';
-import { Constants } from '@/common/constant/Constants';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -216,17 +215,16 @@ export class UserService {
         data: user,
       });
     });
-    //如果为禁用状态，我们把用户的token删除，禁用账户！
+    //如果为禁用状态，吊销该用户所有设备的 Token
     if (sysUser.status === '0') {
-      await redisUtils.del(Constants.LOGIN_TOKEN_KEY + sysUser.userId);
+      await this.authService.revokeAllUserTokens(sysUser.userId);
     }
     return Result.ok();
   }
 
-  /**@description 修改用户密码 */
+  /**@description 修改用户密码（管理员重置） */
   async resetPassword(sysUser: resetPasswordDto) {
     sysUser.password = this.authService.encrypt(sysUser.password);
-    //删除掉空值
     const res = await this.prisma.sysUser.update({
       where: {
         userId: sysUser.userId,
@@ -235,7 +233,8 @@ export class UserService {
         password: sysUser.password,
       },
     });
-    await redisUtils.del(Constants.LOGIN_TOKEN_KEY + sysUser.userId);
+    // 吊销该用户所有设备的 Token，强制重新登录
+    await this.authService.revokeAllUserTokens(sysUser.userId);
     return res;
   }
   /**@description 修改用户状态 */
@@ -248,9 +247,9 @@ export class UserService {
         status: sysUser.status,
       },
     });
-    //如果为禁用状态，我们把用户的token删除，禁用账户！
+    //如果为禁用状态，吊销该用户所有设备的 Token
     if (sysUser.status === '0') {
-      await redisUtils.del(Constants.LOGIN_TOKEN_KEY + sysUser.userId);
+      await this.authService.revokeAllUserTokens(sysUser.userId);
     }
     return res;
   }
@@ -279,9 +278,9 @@ export class UserService {
           },
         },
       });
-      //清空用户的登录token
+      //清空用户的所有登录 Token（多设备全部踢出）
       for (const id of userIds) {
-        await redisUtils.del(Constants.LOGIN_TOKEN_KEY + id);
+        await this.authService.revokeAllUserTokens(id);
       }
       return res;
     });
@@ -304,7 +303,7 @@ export class UserService {
           userId,
         },
       });
-      await redisUtils.del(Constants.LOGIN_TOKEN_KEY + userId);
+      await this.authService.revokeAllUserTokens(userId);
       return res;
     });
   }
@@ -459,7 +458,8 @@ export class UserService {
         password: this.authService.encrypt(newPassword),
       },
     });
-    await redisUtils.del(Constants.LOGIN_TOKEN_KEY + userId);
+    // 吊销该用户所有设备的 Token，强制重新登录
+    await this.authService.revokeAllUserTokens(userId);
     return res;
   }
 }

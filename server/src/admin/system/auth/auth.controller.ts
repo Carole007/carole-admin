@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { LoginBody } from '@/admin/system/auth/dto/LoginBody';
 import { AuthService } from '@/common/service/auth/auth.service';
 import Result from '@/common/result/Result';
@@ -35,9 +35,16 @@ export class AuthController {
     },
   })
   @Post('/logout')
-  async logout(@Headers('authorization') token: string) {
+  async logout(@Req() req) {
     try {
-      await redisUtils.del(Constants.LOGIN_TOKEN_KEY + token.slice(7));
+      const tokenId = req.tokenId as string;
+      const userId = req.userId as number;
+      if (tokenId && userId) {
+        // 删除当前设备的 Token
+        await redisUtils.del(Constants.LOGIN_TOKEN_KEY + tokenId);
+        // 从用户 Token Set 中移除
+        await redisUtils.srem(Constants.USER_TOKENS_KEY + userId, tokenId);
+      }
     } catch (error) {
     } finally {
       return Result.ok();

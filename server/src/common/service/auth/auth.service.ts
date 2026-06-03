@@ -150,12 +150,16 @@ export class AuthService {
         loginTime: loginInfo.loginTime,
       };
       const token = this.createToken(cacheInfo);
-      //存储token
+      //存储 token
       await redisUtils.set(
         Constants.LOGIN_TOKEN_KEY + cacheInfo.tokenId,
         JSON.stringify(cacheInfo),
         Config.token.expiresIn,
       );
+      //将 tokenId 加入该用户的 Token Set，用于后续快速吊销
+      const userTokenSetKey = Constants.USER_TOKENS_KEY + user.userId;
+      await redisUtils.sadd(userTokenSetKey, cacheInfo.tokenId);
+      await redisUtils.expire(userTokenSetKey, Config.token.expiresIn);
       //初始化用户信息存到reids缓存包括权限。。
       await this.refreshUserInfo(user.userId);
       return token;
@@ -432,6 +436,26 @@ export class AuthService {
    */
   encrypt(str: string): string {
     return HmacSHA256(str, Config.crypto.psdSecret).toString();
+  }
+
+  /**
+   * @desc 吊销某个用户的所有 Token（改密/封禁时调用）
+   * 通过 Redis Set O(1) 精确定位该用户所有 tokenId，无需 scan 全库
+   * 即使几十万 token 也仅操作该用户自己的几条记录
+   */
+  async revokeAllUserTokens(userId: number) {
+    const setKey = Constants.USER_TOKENS_KEY + userId;
+    // 从 Set 中拿到该用户所有 tokenId（通常只有几个设备）
+    const tokenIds = await redisUtils.smembers(setKey);
+    if (tokenIds.length) {
+      // 构造所有 login_tokens:{tokenId} key 并批量删除
+      const tokenKeys = tokenIds.map((tid) => Constants.LOGIN_TOKEN_KEY + tid);
+      await redisUtils.batchDel(tokenKeys);
+    }
+    // 删除 Set 本身
+    await redisUtils.del(setKey);
+    // 清除用户信息缓存
+    await redisUtils.del(Constants.LOGIN_CACHE_TOKEN_KEY + userId);
   }
 
   /**@desc 创建token */

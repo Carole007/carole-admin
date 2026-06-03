@@ -121,6 +121,37 @@ class RedisUtils {
     return this.useClient((client) => client.mget(keys));
   }
 
+  // ========== Set 操作 ==========
+
+  async sadd(key: string, member: string): Promise<number> {
+    return this.useClient((client) => client.sadd(key, member));
+  }
+
+  async srem(key: string, member: string): Promise<number> {
+    return this.useClient((client) => client.srem(key, member));
+  }
+
+  async smembers(key: string): Promise<string[]> {
+    return this.useClient((client) => client.smembers(key));
+  }
+
+  async scard(key: string): Promise<number> {
+    return this.useClient((client) => client.scard(key));
+  }
+
+  // ========== 批量操作 ==========
+
+  /** 批量删除 key，返回被删除的数量 */
+  async batchDel(keys: string[]): Promise<number> {
+    if (!keys.length) return 0;
+    return this.useClient((client) => client.del(...keys));
+  }
+
+  /** 设置 key 的过期时间（秒） */
+  async expire(key: string, seconds: number): Promise<number> {
+    return this.useClient((client) => client.expire(key, seconds));
+  }
+
   async testConnection() {
     try {
       const client = await this.pool.acquire();

@@ -46,6 +46,7 @@ function submit() {
     if (valid) {
       updateUserPwd(user.oldPassword, user.newPassword).then(response => {
         proxy.$modal.msgSuccess("修改成功");
+        location.href = '/login';
       });
     }
   });

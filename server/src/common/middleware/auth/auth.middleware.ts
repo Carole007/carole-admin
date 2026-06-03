@@ -29,6 +29,8 @@ export class AuthMiddleware implements NestMiddleware {
       //@ts-ignore
       req.userId = userId;
       //@ts-ignore
+      req.tokenId = tokenId;  // 注入 tokenId，供退出时精确删除
+      //@ts-ignore
       req.token = token;
       //@ts-ignore
       req.user = userInfo;
