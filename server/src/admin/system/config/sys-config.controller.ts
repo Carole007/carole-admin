@@ -54,7 +54,7 @@ export class SysConfigController {
   }
   @ApiOperation({ summary: '根据key获取配置信息' })
   @Get("/getConfigInfo")
- @RequirePermission("system:serverconfig:menu")
+  @RequirePermission("system:serverconfig:menu")
   getConfigInfo(@Query("key") key: string) {
     if (key && Config.ConfigFileMap[key]) {
       return Result.ok(readJsonFile(Config.ConfigFileMap[key].filePath))
@@ -65,13 +65,16 @@ export class SysConfigController {
   @Post("serverConfig")
   @RequirePermission("system:serverconfig:menu")
   changeServerConfig(@Body() data, @Query("key") key: string) {
+    if (!Object.prototype.hasOwnProperty.call(Config.ConfigFileMap, key)) {
+      return Result.Error("非法的配置Key！");
+    }
     if (key in Config.ConfigFileMap) {
       if (typeof data != "string") {
         data = JSON.stringify(data, null, 2)
       }
       try {
         JSON.parse(data);
-      } catch (error) {
+      } catch (error: any) {
         Logger.error("修改配置文件异常：", error?.message);
         return Result.Error("json格式有误！");
       }
