@@ -152,7 +152,7 @@ export class AppModule implements NestModule {
     }
     consumer
       .apply(...middlewares)
-      .exclude('/login', '/logout', '/captchaImage')
+      .exclude('/login', '/captchaImage')
       .forRoutes('*');
   }
 }
