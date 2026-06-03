@@ -13,12 +13,14 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
+import { RequireRole } from '@/common/decorator/require-role.decorator';
 @ApiTags('系统监控')
 @ApiBearerAuth()
 @Controller('/monitor')
 export class monitorController {
-  constructor() {}
+  constructor() { }
   @ApiOperation({ summary: '获取redis信息' })
+  @RequireRole('admin')
   @Throttle({
     default: {
       limit: 10,
@@ -26,6 +28,7 @@ export class monitorController {
     },
   })
   @Get('/cache')
+
   async getCacheInfo() {
     return Result.ok(await redisUtils.getRedisInfo());
   }
@@ -37,6 +40,7 @@ export class monitorController {
     },
   })
   @Get('/server')
+  @RequireRole('admin')
   async getInfo() {
     return Result.ok(await getServerInfo());
   }
