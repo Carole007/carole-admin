@@ -117,14 +117,14 @@ export class AuthService {
         await this.prisma.sysLogininfor.create({
           data: loginInfo,
         });
-        throw new BadRequestException('用户不存在');
+        throw new BadRequestException('用户名或密码错误');
       }
       if (user.password !== this.encrypt(password)) {
         loginInfo.msg = '密码不正确';
         await this.prisma.sysLogininfor.create({
           data: loginInfo,
         });
-        throw new BadRequestException('密码不正确');
+        throw new BadRequestException('用户名或密码错误');
       }
       if (user.status !== '1') {
         loginInfo.msg = '账号被封禁';
@@ -422,6 +422,7 @@ export class AuthService {
       redisUtils.del(Constants.CAPTCHA_CODE_KEY + uuid);
       return false;
     } else {
+      await redisUtils.del(Constants.CAPTCHA_CODE_KEY + uuid); 
       return true;
     }
   }
