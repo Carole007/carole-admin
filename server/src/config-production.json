@@ -1,7 +1,7 @@
 {
   "port": 3000,
   "contextPath": "/v1",
-  "swagger": { "enable": true, "prefix": "/api" },
+  "swagger": { "enable": false, "prefix": "/api" },
   "captcha": { "mode": "math", "expiresIn": 120 },
   "rateLimit": { "storage": "redis", "ttl": 120000, "limit": 60 },
   "crypto": { "psdSecret": "carole123456" },

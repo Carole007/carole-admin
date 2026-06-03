@@ -23,7 +23,7 @@ export const Config = {
   contextPath: '/v1',
   swagger: {
     //是否启用swagger
-    enable: true,
+    enable: false,
     //接口文档路径
     prefix: '/api',
   },
