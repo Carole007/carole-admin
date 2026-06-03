@@ -37,23 +37,27 @@ export class DictTypeController {
   }
 
   @ApiOperation({ summary: '获取字典选择框列表' })
+  @RequirePermission('system:dict:query')
   @Get('optionselect')
   async optionselect() {
     return Result.ok(await this.dictTypeService.selectAllDictType());
   }
 
   @ApiOperation({ summary: '导出xlsx文件' })
+  @RequirePermission('system:dict:export')
   @Get('export')
   async export(@Res() res: Response) {
     this.dictTypeService.exportDictType(res);
   }
   @Get(':id')
   @ApiOperation({ summary: '查询字典类型详细' })
+  @RequirePermission('system:dict:query')
   async getType(@Param('id', ParseIntPipe) id: number) {
     return Result.ok(await this.dictTypeService.selectDictTypeDetail(id));
   }
 
   @ApiOperation({ summary: '新增字典类型' })
+  @RequirePermission('system:dict:add')
   @Post()
   async addType(@Body() dictType: CreateDictTypeDto, @Req() req) {
     dictType = {
@@ -69,6 +73,7 @@ export class DictTypeController {
 
   @ApiOperation({ summary: '修改字典类型' })
   @Put()
+  @RequirePermission('system:dict:edit')
   async updateType(@Body() dictType: updateDictTypeDto, @Req() req) {
     dictType = {
       ...dictType,
@@ -83,6 +88,7 @@ export class DictTypeController {
 
   @ApiOperation({ summary: '刷新字典缓存' })
   @Delete('refreshCache')
+  @RequirePermission('system:dict:edit')
   async refreshCache() {
     await this.dictTypeService.refreshDictCache();
     return Result.ok();
@@ -90,6 +96,7 @@ export class DictTypeController {
 
   @ApiOperation({ summary: '删除字典类型' })
   @Delete('/:ids')
+  @RequirePermission('system:dict:remove')
   async delType(@Param('ids', ParseIntArrayPipe) ids: number[]) {
     const { count } = await this.dictTypeService.deleteDictType(ids);
     return Result.toAjax(count);

@@ -21,7 +21,7 @@ import { CreateDictDataDto } from './dto/createDictDataDto';
 import { nowDateTime } from '@/common/utils';
 import { updateDictDataDto } from './dto/updateDictDataDto';
 import { Response } from 'express';
-
+import { RequirePermission } from '@/common/decorator/require-premission.decorator';
 @ApiTags('字典数据')
 @ApiBearerAuth()
 @Controller('/system/dict/data')
@@ -30,16 +30,19 @@ export class DictDataController {
   dictDataService: SysDictDataService;
   @ApiOperation({ summary: '查询字典数据列表' })
   @Get('list')
+  @RequirePermission('system:dict:query')
   async listData(@Query() q: queryDictDataDto) {
     return Result.TableData(await this.dictDataService.selectDictDataList(q));
   }
   @ApiOperation({ summary: '导出xlsx文件' })
   @Get('export')
+  @RequirePermission('system:dict:export')
   async export(@Res() res: Response) {
     this.dictDataService.exportDictData(res);
   }
   @Get('/type/:type')
   @ApiOperation({ summary: '根据字典类型查询字典数据信息' })
+  @RequirePermission('system:dict:query')
   async getDicts(@Param('type') type: string) {
     if (!type) return Result.Validation('请传入字典类型');
     return Result.ok(
@@ -48,12 +51,14 @@ export class DictDataController {
   }
   @Get(':id')
   @ApiOperation({ summary: '查询字典数据详细' })
+  @RequirePermission('system:dict:query')
   async getData(@Param('id', ParseIntPipe) id: number) {
     return Result.ok(await this.dictDataService.selectDictDataDetail(id));
   }
 
   @ApiOperation({ summary: '新增字典数据' })
   @Post()
+  @RequirePermission('system:dict:add')
   async addData(@Body() dictData: CreateDictDataDto, @Req() req) {
     dictData.createTime = nowDateTime();
     dictData.updateTime = nowDateTime();
@@ -65,6 +70,7 @@ export class DictDataController {
 
   @ApiOperation({ summary: '修改字典数据' })
   @Put()
+  @RequirePermission('system:dict:edit')
   async updateData(@Body() dictData: updateDictDataDto, @Req() req) {
     dictData.updateTime = nowDateTime();
     dictData.updateBy = req.user.userName;
@@ -73,6 +79,7 @@ export class DictDataController {
   }
   @ApiOperation({ summary: '删除字典数据' })
   @Delete(':dictCodes')
+  @RequirePermission('system:dict:remove')
   async delData(@Param('dictCodes', ParseIntArrayPipe) dictCodes: number[]) {
     const { count } = await this.dictDataService.deleteDictData(dictCodes);
     return Result.toAjax(count);
