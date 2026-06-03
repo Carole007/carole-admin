@@ -34,7 +34,7 @@ import { TableDataInfo } from '@/common/domain/TableDataInfo';
 @ApiBearerAuth()
 @Controller('monitor/logininfor')
 export class SysLogininforController {
-  constructor(private logininforService: LogininforService) {}
+  constructor(private logininforService: LogininforService) { }
   @ApiOperation({ summary: '查询登录日志列表' })
   @ApiResponse({ type: TableDataInfo<SysLogininfor> })
   @RequirePermission('monitor:logininfor:query')
@@ -47,6 +47,7 @@ export class SysLogininforController {
     );
   }
   @ApiOperation({ summary: '清空登录日志' })
+  @RequirePermission('monitor:logininfor:remove')
   @Delete('/clean')
   async clearInfo(): Promise<Result<null>> {
     await this.logininforService.clear();
